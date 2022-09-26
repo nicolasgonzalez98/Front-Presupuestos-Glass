@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import ArticleElement from "./ArticleElement";
+import {useSelector} from 'react-redux'
 
 export function BudgetForm(){
 
-    
+    const articulos = useSelector(state => state.articles)
 
     function validate(){
         return ''
@@ -17,14 +18,33 @@ export function BudgetForm(){
         articles: []
     })
 
+    function handleChange(e){
+        setInput({
+            ...input,
+            [e.target.name]:e.target.value
+        })
+    }
+
+    function handleSubmit(e){
+        e.preventDefault()
+        input.articles = articulos
+        setInput({
+            number_budget: 0,
+            name: '',
+            surname: '',
+            articles: []
+        })
+    }
+
     return (
-        <div>
+        <form onSubmit={handleSubmit}>
             <label>Nro. de presupuesto: </label>
             <input
                 type='number'
                 name='number_budget'
                 placeholder='Presupuesto N°: ' 
                 value={input.number_budget}
+                onChange={handleChange}
             />
 
             <label>Nombre: </label>
@@ -33,6 +53,7 @@ export function BudgetForm(){
                 name='name'
                 placeholder='Nombre del cliente...' 
                 value={input.name}
+                onChange={handleChange}
             />
 
             <label>Apellido: </label>
@@ -41,6 +62,7 @@ export function BudgetForm(){
                 name='surname'
                 placeholder='Apellido del cliente...' 
                 value={input.surname}
+                onChange={handleChange}
             />
 
             <div>
@@ -48,6 +70,7 @@ export function BudgetForm(){
                 <ArticleElement />
             </div>
             
-        </div>
+            <input type='submit' value='Crear presupuesto'/>
+        </form>
     )
 }

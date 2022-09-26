@@ -70,7 +70,7 @@ export function NewArticleForm(){
                 value={product.price}
                 onChange={handleChange} 
             />
-            <button onClick={addProduct}>Agregar</button>
+            <button type="button" onClick={addProduct}>Agregar</button>
         </div>
     )
 }
