@@ -1,19 +1,32 @@
 import React from "react";
 import { useState } from "react";
+import ArticleElement from "./ArticleElement";
 
 export function BudgetForm(){
+
+    
 
     function validate(){
         return ''
     }
 
     const [input, setInput] = useState({
+        number_budget: 0,
         name: '',
-        surname: ''
+        surname: '',
+        articles: []
     })
 
     return (
         <div>
+            <label>Nro. de presupuesto: </label>
+            <input
+                type='number'
+                name='number_budget'
+                placeholder='Presupuesto N°: ' 
+                value={input.number_budget}
+            />
+
             <label>Nombre: </label>
             <input
                 type='text'
@@ -29,6 +42,12 @@ export function BudgetForm(){
                 placeholder='Apellido del cliente...' 
                 value={input.surname}
             />
+
+            <div>
+                <label>Articulos: </label>
+                <ArticleElement />
+            </div>
+            
         </div>
     )
 }
