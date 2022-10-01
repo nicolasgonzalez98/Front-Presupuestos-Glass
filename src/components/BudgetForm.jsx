@@ -2,10 +2,13 @@ import React from "react";
 import { useState } from "react";
 import ArticleElement from "./ArticleElement";
 import {useSelector} from 'react-redux'
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import BudgetPDF from "./BudgetPDF";
 
 export function BudgetForm(){
 
     const articulos = useSelector(state => state.articles)
+    const [finished, setFinished] = useState(false)
 
     function validate(){
         return ''
@@ -28,49 +31,67 @@ export function BudgetForm(){
     function handleSubmit(e){
         e.preventDefault()
         input.articles = articulos
-        setInput({
-            number_budget: 0,
-            name: '',
-            surname: '',
-            articles: []
-        })
+        setFinished(!finished)
+        
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Nro. de presupuesto: </label>
-            <input
-                type='number'
-                name='number_budget'
-                placeholder='Presupuesto N°: ' 
-                value={input.number_budget}
-                onChange={handleChange}
-            />
+        <div className="BudgetForm">
+            {
+                !finished ?
+                <>
+                    <form onSubmit={handleSubmit}>
+                        <label>Nro. de presupuesto: </label>
+                        <input
+                            type='number'
+                            name='number_budget'
+                            placeholder='Presupuesto N°: ' 
+                            value={input.number_budget}
+                            onChange={handleChange}
+                        />
 
-            <label>Nombre: </label>
-            <input
-                type='text'
-                name='name'
-                placeholder='Nombre del cliente...' 
-                value={input.name}
-                onChange={handleChange}
-            />
+                        <label>Nombre: </label>
+                        <input
+                            type='text'
+                            name='name'
+                            placeholder='Nombre del cliente...' 
+                            value={input.name}
+                            onChange={handleChange}
+                        />
 
-            <label>Apellido: </label>
-            <input
-                type='text'
-                name='surname'
-                placeholder='Apellido del cliente...' 
-                value={input.surname}
-                onChange={handleChange}
-            />
+                        <label>Apellido: </label>
+                        <input
+                            type='text'
+                            name='surname'
+                            placeholder='Apellido del cliente...' 
+                            value={input.surname}
+                            onChange={handleChange}
+                        />
 
-            <div>
-                <label>Articulos: </label>
-                <ArticleElement />
-            </div>
-            
-            <input type='submit' value='Crear presupuesto'/>
-        </form>
+                        <div>
+                            <label>Articulos: </label>
+                            <ArticleElement />
+                        </div>
+                        
+                        <input type='submit' value='Crear presupuesto'/>
+                    </form>
+                </> : 
+                <>  
+
+                    <PDFDownloadLink 
+                        document={
+                        <BudgetPDF 
+                            number_budget={input.number_budget}
+                            articles={input.articles}
+                        />
+                    }
+                    >
+                        Descargar PDF
+                    </PDFDownloadLink>
+                </>
+            }
+        </div>    
     )
 }
+
+export default BudgetForm;

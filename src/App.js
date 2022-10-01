@@ -1,13 +1,23 @@
 
 import './App.css';
-import { BudgetForm } from './components/BudgetForm';
+import { BrowserRouter, Route, Routes} from 'react-router-dom'
+import BudgetForm from './components/BudgetForm'
+import ViewerPDF from './components/ViewerPDF';
 
 function App() {
+
+  
+
   return (
-    <div className="App">
-      <BudgetForm />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/budget' element={<BudgetForm />} />
+        <Route path='/example' element={<ViewerPDF />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+
 
 export default App;
