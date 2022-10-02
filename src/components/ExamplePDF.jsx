@@ -44,6 +44,23 @@ const styles = StyleSheet.create({
     paddingLeft:5,
     fontSize: 16
     
+  },
+  headers2: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft:10,
+    marginTop:5,
+    paddingLeft:5,
+    fontSize: 16,
+    textAlign: 'left',
+    
+  },
+  celda: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    minWidth: 90,
+    maxWidth: 100,
+    textAlign: 'left'
   }
   
 });
@@ -51,12 +68,16 @@ const styles = StyleSheet.create({
 const stylesArticles = StyleSheet.create({
   articles: {
     flexDirection: 'row',
-    marginLeft:10,
+    marginLeft:15,
     marginTop:5,
     paddingLeft:5,
     fontSize: 14,
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
     position:'absolute',
+    
+  },
+  subarticles: {
+    
     
   }
 })
@@ -74,27 +95,54 @@ const ExamplePDF = () => (
         <Text>Cliente: Nicolas Gonzalez</Text>
         <Text style={styles.date}>Fecha</Text>
       </View>
-      <View style={styles.headers}>
-        <Text>
-          Cantidad              Descripcion       Medidas      Superficie   Precio por U.     Total
-        </Text>
+      
+      {/* <View style={stylesArticles.articles}>
+        <Text style={[stylesArticles.subarticles, {left: 5, top: topPosition}]}>1</Text>
+        <Text style={[stylesArticles.subarticles, {left: 30, top: topPosition}]}>Vidrio</Text>
+        <Text style={[stylesArticles.subarticles, {left: 100, top: topPosition}]}>200x200</Text>
+        <Text style={[stylesArticles.subarticles, {left: 350, top: topPosition}]}>40000M2</Text>
+        <Text style={[stylesArticles.subarticles, {left: 440, top: topPosition}]}>100</Text>
+        <Text style={[stylesArticles.subarticles, {left: 535, top: topPosition}]}>100</Text>
       </View>
       <View style={stylesArticles.articles}>
-        <Text style={{left: 2, top: topPosition}}>1</Text>
-        <Text style={{left: 15, top: topPosition}}>Mampara blindada de acetato</Text>
-        <Text style={{left: 50, top: topPosition}}>200x200</Text>
-        <Text style={{left: 88, top: topPosition}}>40000M2</Text>
-        <Text style={{left: 130, top: topPosition}}>100</Text>
-        <Text style={{left: 200, top: topPosition}}>100</Text>
-      </View>
-      <View style={stylesArticles.articles}>
-        <Text style={{left: 2, top: topPosition+20}}>1</Text>
-        <Text style={{left: 15, top: topPosition+20}}>Mampara blindada de acetato</Text>
+        <Text style={[stylesArticles.subarticles, {left: 5, top: topPosition+20}]}>1</Text>
+        <Text style={[stylesArticles.subarticles, {left: 30, top: topPosition+20}]}>Mampara blindada de acetato</Text>
         <Text style={{left: 50, top: topPosition+20}}>200x200</Text>
         <Text style={{left: 88, top: topPosition+20}}>40000M2</Text>
         <Text style={{left: 130, top: topPosition+20}}>100</Text>
         <Text style={{left: 200, top: topPosition+20}}>100</Text>
-      </View>
+      </View> */}
+      <table>
+        <thead>
+          <tr style={styles.headers2}>
+            <th><Text style={styles.celda}>Cantidad</Text></th>
+            <th><Text style={styles.celda}>Descripcion</Text></th>
+            <th><Text style={styles.celda}>Peso</Text></th>
+            <th><Text style={styles.celda}>Medidas</Text></th>
+            <th><Text style={styles.celda}>Superficie</Text></th>
+            <th><Text style={styles.celda}>Precio por U.</Text></th>
+            <th><Text style={styles.celda}>Total</Text></th>
+          </tr>
+        </thead>
+        <tr style={styles.headers2}>
+          <td><Text style={styles.celda}>1</Text></td>
+          <td><Text style={styles.celda}>Vidrio</Text></td>
+          <td><Text style={styles.celda}>10Kg</Text></td>
+          <td><Text style={styles.celda}>200x200</Text></td>
+          <td><Text style={styles.celda}>40000M2</Text></td>
+          <td><Text style={styles.celda}>100</Text></td>
+          <td><Text style={styles.celda}>100</Text></td>
+        </tr>
+        <tr style={styles.headers2}>
+          <td><Text style={styles.celda}>1</Text></td>
+          <td><Text style={styles.celda}>Mampara blindada de acetato</Text></td>
+          <td><Text style={styles.celda}>10Kg</Text></td>
+          <td><Text style={styles.celda}>100x100</Text></td>
+          <td><Text style={styles.celda}>10000M2</Text></td>
+          <td><Text style={styles.celda}>100</Text></td>
+          <td><Text style={styles.celda}>100</Text></td>
+        </tr>
+      </table>
     </Page>
     
   </Document>

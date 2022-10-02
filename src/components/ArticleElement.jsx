@@ -19,8 +19,8 @@ const ArticleElement = () => {
             {
                 my_products.length > 0 &&
                 <>
-                    {my_products?.map(e =>
-                        <ul>{e.name}</ul>
+                    {my_products?.map((e, index) =>
+                        <ul key={index}>{e.name}</ul>
                         )}
                 </>
             }
