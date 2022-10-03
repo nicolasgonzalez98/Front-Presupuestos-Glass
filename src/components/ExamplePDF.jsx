@@ -61,6 +61,34 @@ const styles = StyleSheet.create({
     minWidth: 90,
     maxWidth: 100,
     textAlign: 'left'
+  },
+  bottom_section: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 10,
+    justifyContent: 'space-between'
+  },
+  aclaracion: {
+    fontSize: 10, 
+    maxWidth: 240, 
+    border: 2, 
+    borderColor: 'black'
+  },
+  totales: {
+    flexDirection: 'column',
+    minWidth: 240,
+    marginRight: 5,
+    justifyContent: 'space-between'
+  },
+  individuales: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  descripcion: {
+    fontSize: 15, 
+    maxWidth: 240, 
+    border: 2, 
+    borderColor: 'black'
   }
   
 });
@@ -112,7 +140,7 @@ const ExamplePDF = () => (
         <Text style={{left: 130, top: topPosition+20}}>100</Text>
         <Text style={{left: 200, top: topPosition+20}}>100</Text>
       </View> */}
-      <table>
+      <table style={{borderBottom: 2, borderBottomColor: 'black'}}>
         <thead>
           <tr style={styles.headers2}>
             <th><Text style={styles.celda}>Cantidad</Text></th>
@@ -142,7 +170,63 @@ const ExamplePDF = () => (
           <td><Text style={styles.celda}>100</Text></td>
           <td><Text style={styles.celda}>100</Text></td>
         </tr>
+        <tr style={styles.headers2}>
+          <td>
+            <Text style={styles.celda}>
+              Sup. total: 
+            </Text>
+          </td>
+          <td>
+            <Text style={styles.celda}>
+            20000M2
+            </Text>
+          </td>
+          <td>
+            <Text style={styles.celda}>
+              Peso total:
+            </Text>
+          </td>
+          <td>
+            <Text style={styles.celda}>
+              200kg
+            </Text>
+          </td>
+        </tr>
       </table>
+      <div style={styles.bottom_section}>
+        <section style={styles.aclaracion}>
+          <Text>
+            SR CLIENTE: El Presupuesto refleja el valor correspondiente al material solicitado con las
+            medidas provistas por usted o recomendadas por nuestros técnicos. Es IMPORTANTE que
+            revise el presupuesto ya que su aprobación es compromiso de producción del mismo.
+            La empresa no se hará responsable por diferencias que puedan producirse por este motivo.
+            Este presupuesto está sujeto a posibles aumentos. El precio definitivo de las mercaderías 
+            presupuestadas se fijara en el momento de su efectivo pago.
+          </Text>
+        </section>
+        <section style={styles.totales}>
+          <div style={styles.individuales}>
+            <Text>Subtotal</Text>
+            <Text>600</Text>
+          </div>
+          <div style={styles.individuales}>
+            <Text>IVA</Text>
+            <Text>0</Text>
+          </div>
+          <div style={styles.individuales}>
+            <Text>Total</Text>
+            <Text>600</Text>
+          </div>
+        </section>
+      </div>
+      <div style={styles.bottom_section}>
+        <section style={styles.descripcion}>
+          <Text >
+            El cliente Nicolas Gonzalez vive en Calle Falsa 123, puerta negra, fachada blanca. Frente a un parque
+            y al lado de una carniceria
+          </Text>
+        </section>
+      </div>
     </Page>
     
   </Document>
