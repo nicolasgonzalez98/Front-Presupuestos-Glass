@@ -10,22 +10,36 @@ export function BudgetForm(){
     const articulos = useSelector(state => state.articles)
     const [finished, setFinished] = useState(false)
 
-    function validate(){
-        return ''
+    function validate(input){
+        let errors = {}
+
+        if(!input.number_budget){
+            errors.number_budget = 'No ingresaste N° de presupuesto!'
+        }
+
+
+        return errors
     }
 
     const [input, setInput] = useState({
-        number_budget: 0,
-        name: '',
-        surname: '',
+        number_budget: '',
         articles: []
     })
+
+    const [errors, setErrors] = useState({});
 
     function handleChange(e){
         setInput({
             ...input,
             [e.target.name]:e.target.value
         })
+
+        setErrors(
+            validate({
+                ...input,
+                [e.target.name]: e.target.value,
+            })
+        );
     }
 
     function handleSubmit(e){
@@ -43,30 +57,14 @@ export function BudgetForm(){
                     <form onSubmit={handleSubmit}>
                         <label>Nro. de presupuesto: </label>
                         <input
-                            type='number'
+                            type='text'
                             name='number_budget'
                             placeholder='Presupuesto N°: ' 
                             value={input.number_budget}
                             onChange={handleChange}
                         />
 
-                        <label>Nombre: </label>
-                        <input
-                            type='text'
-                            name='name'
-                            placeholder='Nombre del cliente...' 
-                            value={input.name}
-                            onChange={handleChange}
-                        />
-
-                        <label>Apellido: </label>
-                        <input
-                            type='text'
-                            name='surname'
-                            placeholder='Apellido del cliente...' 
-                            value={input.surname}
-                            onChange={handleChange}
-                        />
+                        
 
                         <div>
                             <label>Articulos: </label>

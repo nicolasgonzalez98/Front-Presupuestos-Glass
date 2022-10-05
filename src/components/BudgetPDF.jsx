@@ -120,8 +120,6 @@ const stylesArticles = StyleSheet.create({
 
 // Create Document Component
 function BudgetPDF({number_budget, articles}){
-  
-  let [topPosition, setTopPosition] = useState(220)
 
   return (
   <Document>
@@ -209,14 +207,14 @@ function BudgetPDF({number_budget, articles}){
           </div>
         </section>
       </div>
-      {/* <div style={styles.bottom_section}>
+      <div style={styles.bottom_section}>
         <section style={styles.descripcion}>
           <Text >
             El cliente Nicolas Gonzalez vive en Calle Falsa 123, puerta negra, fachada blanca. Frente a un parque
             y al lado de una carniceria
           </Text>
         </section>
-      </div> */}
+      </div>
       
 
 
