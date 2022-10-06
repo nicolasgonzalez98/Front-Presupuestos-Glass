@@ -1,47 +1,37 @@
 import React from "react";
-import { useState } from "react";
 
-export function ClientInfo(){
 
-    function validate(input){
-        let errors = {}
-
-        return errors
-    }
-
-    const [input, setInput] = useState({
-        name: '',
-        surname: '',
-        dni: '',
-        address: '',
-        description: '',
-        phone: ''
-    })
-
-    const [errors, setErrors] = useState({});
+export function ClientInfo({client, setClient, setErrorsClient, validateClient, errorsClient}){
 
     function handleChange(e){
-        setInput({
-            ...input,
+        
+
+        setClient({
+            ...client,
             [e.target.name]:e.target.value
         })
 
-        setErrors(
-            validate({
-                ...input,
+        setErrorsClient(
+            validateClient({
+                ...client,
                 [e.target.name]: e.target.value,
             })
-        );
+        )
+
+        
+
+        
     }
 
     return (
         <div>
+            
             <label>Nombre: </label>
             <input
                 type='text'
                 name='name'
                 placeholder='Nombre del cliente...' 
-                value={input.name}
+                value={client.name}
                 onChange={handleChange}
             />
 
@@ -50,7 +40,7 @@ export function ClientInfo(){
                 type='text'
                 name='surname'
                 placeholder='Apellido del cliente...' 
-                value={input.surname}
+                value={client.surname}
                 onChange={handleChange}
             />
             <label>CUIT/DNI: </label>
@@ -58,33 +48,33 @@ export function ClientInfo(){
                 type='text'
                 name='dni'
                 placeholder='CUIT/DNI del cliente...' 
-                value={input.dni}
+                value={client.dni}
                 onChange={handleChange}
             />
-            <label>CUIT/DNI: </label>
+            <label>Direccion: </label>
             <input
                 type='text'
                 name='address'
                 placeholder='Dirección del cliente...' 
-                value={input.address}
+                value={client.address}
                 onChange={handleChange}
             />
 
-            <label>Informacion del cliente: </label>
+            <label>Descripcion del cliente: </label>
             <input
                 type='text'
                 name='description'
-                placeholder='Dirección del cliente...' 
-                value={input.description}
+                placeholder='Descripcion del cliente...' 
+                value={client.description}
                 onChange={handleChange}
             />
 
-            <label>Informacion del cliente: </label>
+            <label>Telefono: </label>
             <input
                 type='text'
                 name='phone'
                 placeholder='Telefono del cliente...' 
-                value={input.phone}
+                value={client.phone}
                 onChange={handleChange}
             />
         </div>

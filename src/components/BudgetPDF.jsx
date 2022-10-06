@@ -119,8 +119,44 @@ const stylesArticles = StyleSheet.create({
 })
 
 // Create Document Component
-function BudgetPDF({number_budget, articles}){
+function BudgetPDF({number_budget, articles, client}){
 
+  function superficie(){
+    let total = 0
+
+    for(let i = 0; i < articles.length; i++){
+      total += articles[i].width * articles[i].height
+    }
+
+    return total 
+  }
+
+  function total_weight(){
+    let total = 0
+
+    for(let i = 0; i < articles.length; i++){
+      total += articles[i].weight
+    }
+
+    return total 
+  }
+
+  function subprice(){
+    let total = 0
+
+    for(let i = 0; i < articles.length; i++){
+      total += articles[i].price * articles[i].quantity
+    }
+
+    return total 
+  }
+
+  let sup_total = superficie()
+
+  let peso_total = total_weight()
+
+  let subtotal = subprice()
+  
   return (
   <Document>
     
@@ -131,7 +167,7 @@ function BudgetPDF({number_budget, articles}){
         <Text style={styles.mail}>E-Mail de contacto: info.ventas.decorglass@gmail.com</Text>
       </View>
       <View style={styles.client}>
-        <Text>Cliente: Nicolas Gonzalez</Text>
+        <Text>Cliente: {`${client.name} ${client.surname}`}</Text>
         <Text style={styles.date}>Fecha</Text>
       </View>
       <table style={{borderBottom: 2, borderBottomColor: 'black'}}>
@@ -148,9 +184,9 @@ function BudgetPDF({number_budget, articles}){
         </thead>
         {articles?.map((e, index) => 
           <tr key={index} style={stylesArticles.headers2}>
-            <td><Text style={stylesArticles.celda}>{e.quantity}</Text></td>
+            <td><Text style={stylesArticles.celda}>{parseInt(e.quantity)}</Text></td>
             <td><Text style={stylesArticles.celda}>{e.name}</Text></td>
-            <td><Text style={stylesArticles.celda}>10kg</Text></td>
+            <td><Text style={stylesArticles.celda}>{parseInt(e.weight)}</Text></td>
             <td><Text style={stylesArticles.celda}>{`${e.width}x${e.height}M2`}</Text></td>
             <td><Text style={stylesArticles.celda}>{e.width * e.height}</Text></td>
             <td><Text style={stylesArticles.celda}>{e.price}</Text></td>
@@ -165,7 +201,7 @@ function BudgetPDF({number_budget, articles}){
           </td>
           <td>
             <Text style={stylesArticles.celda}>
-            20000M2
+            {`${sup_total}`}M2
             </Text>
           </td>
           <td>
@@ -175,7 +211,7 @@ function BudgetPDF({number_budget, articles}){
           </td>
           <td>
             <Text style={stylesArticles.celda}>
-              200kg
+              {`${peso_total}`}kg
             </Text>
           </td>
         </tr>
@@ -195,7 +231,7 @@ function BudgetPDF({number_budget, articles}){
         <section style={styles.totales}>
           <div style={styles.individuales}>
             <Text>Subtotal</Text>
-            <Text>600</Text>
+            <Text>{subtotal}</Text>
           </div>
           <div style={styles.individuales}>
             <Text>IVA</Text>
@@ -203,7 +239,7 @@ function BudgetPDF({number_budget, articles}){
           </div>
           <div style={styles.individuales}>
             <Text>Total</Text>
-            <Text>600</Text>
+            <Text>${subtotal}</Text>
           </div>
         </section>
       </div>

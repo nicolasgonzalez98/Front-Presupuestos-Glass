@@ -83,14 +83,21 @@ export function NewArticleForm(){
     }
 
     function addProduct(){
-        dispatch(add_product(product))
-        setProduct({
-            name: '',
-            quantity: '',
-            width: '',
-            height: '',
-            price:''
-        })
+        let log_error;
+        if (Object.keys(errors).length === 0 && product.name) {
+            dispatch(add_product(product))
+            setProduct({
+                name: '',
+                quantity: '',
+                width: '',
+                weight: '',
+                height: '',
+                price:''
+            })
+        }else{
+            log_error = 'Faltan datos obligatorios.'
+        }
+        
     }
 
     return (
