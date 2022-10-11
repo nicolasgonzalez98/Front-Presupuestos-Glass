@@ -2,6 +2,14 @@ import React from "react"
 import { useState } from "react"
 import { useDispatch } from 'react-redux'
 import { add_product } from "../redux/actions"
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+
+import Form from 'react-bootstrap/Form';
+import Col from "react-bootstrap/esm/Col";
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import FormLabel from "react-bootstrap/esm/FormLabel";
+
 
 export function NewArticleForm(){
 
@@ -102,49 +110,91 @@ export function NewArticleForm(){
 
     return (
         <div>
-            <input 
-                type='text' 
-                placeholder='Nombre del articulo...'
-                name='name'
-                value={product.name}
-                onChange={handleChange}
-            />
-            <input 
-                type='text' 
-                placeholder="Ingrese cantidad"
-                name='quantity'
-                value={product.quantity}
-                onChange={handleChange}
-            />
-            <input 
-                type='text' 
-                placeholder="Ingrese peso"
-                name='weight'
-                value={product.weight}
-                onChange={handleChange}
-            />
-            <input 
-                type='text' 
-                placeholder="Ingrese ancho del producto..."
-                name='width'
-                value={product.width}
-                onChange={handleChange}
-            />
-            <input 
-                type='text' 
-                placeholder="Ingrese alto del producto..."
-                name='height'
-                value={product.height}
-                onChange={handleChange}    
-            />
-            <input 
-                type='text' 
-                placeholder="Ingrese precio por unidad..." 
-                name='price'
-                value={product.price}
-                onChange={handleChange} 
-            />
-            <button type="button" onClick={addProduct}>Agregar</button>
+            <h5 className="mb-3">Ingresar nuevo articulo</h5>
+            <Row className="mb-3">
+                <Form.Group as={Col}>
+                    <FloatingLabel label='Nombre del articulo'>
+                        <input 
+                            type='text'
+                            className="form-control"
+                            //placeholder='Nombre del articulo...'
+                            name='name'
+                            value={product.name}
+                            onChange={handleChange}
+                        />
+                    </FloatingLabel>
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <FloatingLabel label='Cantidad del articulo'>
+                    <input 
+                        type='text'
+                        className="form-control"
+                        //placeholder="Ingrese cantidad"
+                        name='quantity'
+                        value={product.quantity}
+                        onChange={handleChange}
+                    />
+                    </FloatingLabel>
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <FloatingLabel label='Peso del articulo'>
+                        <input 
+                            type='text'
+                            className="form-control" 
+                            
+                            name='weight'
+                            value={product.weight}
+                            onChange={handleChange}
+                        />
+                    </FloatingLabel>
+                </Form.Group>
+                
+            </Row>
+            <Row className="mb-3">
+                <Form.Group as={Col}>
+
+                <FloatingLabel  label='Ancho del articulo'>
+                    <input 
+                        type='text'
+                        className="form-control"
+                        
+                        name='width'
+                        value={product.width}
+                        onChange={handleChange}
+                    />
+                </FloatingLabel>
+
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <FloatingLabel label='Alto del articulo'>
+                        <input 
+                            type='text'
+                            className="form-control"
+                            
+                            name='height'
+                            value={product.height}
+                            onChange={handleChange}    
+                        />
+                    </FloatingLabel>
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <FloatingLabel label='Precio del articulo'> 
+                        <input 
+                            type='text' 
+                            className="form-control"
+                            name='price'
+                            value={product.price}
+                            onChange={handleChange} 
+                        />
+                    </FloatingLabel>
+                </Form.Group>
+            </Row>
+            
+            
+            
+            
+            <Button variant="primary" type="button" onClick={addProduct}>Agregar</Button>
+            <hr />
         </div>
     )
 }

@@ -6,6 +6,10 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import BudgetPDF from "./BudgetPDF";
 import { ClientInfo } from "./ClientInfo";
 
+//Bootstrap
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 export function BudgetForm(){
 
     const articulos = useSelector(state => state.articles)
@@ -94,22 +98,28 @@ export function BudgetForm(){
     }
 
     return (
-        <div className="BudgetForm">
+        <div gap={2} className="col-md-5 mx-auto mt-3 container mb-3">
             {
                 !finished ?
                 <>
-                    <form onSubmit={handleSubmit}>
-                        <label>Nro. de presupuesto: </label>
-                        <input
-                            type='text'
-                            name='number_budget'
-                            placeholder='Presupuesto N°: ' 
-                            value={input.number_budget}
-                            onChange={handleChange}
-                        />
+                    <Form onSubmit={handleSubmit}>
+                        <h4 className="mb-3">Crear nuevo presupuesto</h4>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Nro. de presupuesto:</Form.Label>
+                            <input
+                                type='text'
+                                name='number_budget'
+                                placeholder='Presupuesto N°: ' 
+                                value={input.number_budget}
+                                onChange={handleChange}
+                                className='form-control'
+                            />
+                        </Form.Group>
+                        
+                        
 
-                        <div>
-                            <label>Cliente: </label>
+                        <div className="mb-3">
+                            <Form.Label>Cliente: </Form.Label>
                             <ClientInfo 
                                 client={client}
                                 setClient={setClient}
@@ -118,15 +128,15 @@ export function BudgetForm(){
                                 errorsClient={errorsClient}
                             />
                         </div>
-                        
+                        <hr />
 
-                        <div>
-                            <label>Articulos: </label>
+                        <div className="mb-3">
+                            
                             <ArticleElement />
                         </div>
                         
-                        <input type='submit' value='Crear presupuesto'/>
-                    </form>
+                        <Button type='submit' variant="success">Crear presupuesto</Button>
+                    </Form>
                 </> : 
                 <>  
 
