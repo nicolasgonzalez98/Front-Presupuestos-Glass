@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Col from "react-bootstrap/esm/Col";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import FormLabel from "react-bootstrap/esm/FormLabel";
+
 
 
 export function NewArticleForm(){
