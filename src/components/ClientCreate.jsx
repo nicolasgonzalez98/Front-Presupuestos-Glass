@@ -1,6 +1,6 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -15,7 +15,7 @@ import { create_client } from "../redux/actions";
 export function ClientCreate(){
 
     const dispatch = useDispatch()
-    const history = useNavigate()
+    //const history = useNavigate()
 
     const [client, setClient] = useState({
         name: '',

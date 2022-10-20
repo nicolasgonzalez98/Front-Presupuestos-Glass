@@ -5,13 +5,17 @@ import {useSelector} from 'react-redux'
 import BudgetPDF from "./BudgetPDF";
 import { ClientInfo } from "./ClientInfo";
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { useDispatch } from 'react-redux';
 
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { create_client } from "../redux/actions";
 
 
 export function BudgetForm(){
+
+    const dispatch = useDispatch()
 
     const articulos = useSelector(state => state.articles)
     const [finished, setFinished] = useState(false)
@@ -98,6 +102,11 @@ export function BudgetForm(){
         
     }
 
+    function confirmBudget(client){
+        dispatch(create_client(client))
+        
+    }
+
     return (
         <div gap={2} className="col-md-5 mx-auto mt-3 container mb-3">
             {
@@ -157,6 +166,7 @@ export function BudgetForm(){
                             client={client}
                         />
                     }
+                        onClick={() => confirmBudget(client)}
                     >
                         Descargar PDF
                     </PDFDownloadLink>
