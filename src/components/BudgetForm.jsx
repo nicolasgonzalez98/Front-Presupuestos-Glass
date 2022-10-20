@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import ArticleElement from "./ArticleElement";
 import {useSelector} from 'react-redux'
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import BudgetPDF from "./BudgetPDF";
 import { ClientInfo } from "./ClientInfo";
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
 
 export function BudgetForm(){
 
@@ -139,7 +140,15 @@ export function BudgetForm(){
                     </Form>
                 </> : 
                 <>  
-
+                <div className="col-md-5 mx-auto mt-5 container">
+                    <h4>Vista previa</h4>
+                    <PDFViewer width={'auto'} height={'auto'} className='mt-3 '>
+                        <BudgetPDF
+                            number_budget={input.number_budget}
+                            articles={input.articles}
+                            client={client}
+                        />
+                    </PDFViewer>
                     <PDFDownloadLink 
                         document={
                         <BudgetPDF 
@@ -151,6 +160,7 @@ export function BudgetForm(){
                     >
                         Descargar PDF
                     </PDFDownloadLink>
+                </div>
                 </>
             }
         </div>    
