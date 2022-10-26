@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 //import { useNavigate } from 'react-router-dom';
 
@@ -11,11 +11,23 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import Button from 'react-bootstrap/Button';
 import { create_client } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
 
 export function ClientCreate(){
+    
+    useEffect(() => {
+        let user_id = localStorage.getItem('id_user')
+        console.log(user_id)
+        if(user_id === null){
+            navigate('/')
+        }
 
+
+    }, [])
+
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    //const history = useNavigate()
+    
 
     const [client, setClient] = useState({
         name: '',
@@ -23,7 +35,8 @@ export function ClientCreate(){
         dni: '',
         address: '',
         description: '',
-        phone: ''
+        phone: '',
+        userId: localStorage.getItem('id_user')
     })
 
     

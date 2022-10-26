@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArticleElement from "./ArticleElement";
 import {useSelector} from 'react-redux'
 import BudgetPDF from "./BudgetPDF";
@@ -11,11 +10,23 @@ import { useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { create_client } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
 
 
 export function BudgetForm(){
 
+    useEffect(() => {
+        const user_id = localStorage.getItem('id_user')
+        console.log(user_id)
+        if(user_id === null){
+            navigate('/')
+        }
+
+
+    }, [])
+
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const articulos = useSelector(state => state.articles)
     const [finished, setFinished] = useState(false)

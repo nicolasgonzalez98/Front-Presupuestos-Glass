@@ -110,7 +110,7 @@ export function ClientInfo({client, setClient, setErrorsClient, validateClient, 
                             <Form.Label>Descripcion del cliente: </Form.Label>
                             
                             <textarea
-                                class="form-control"
+                                className="form-control"
                                 type='text'
                                 rows={3} 
                                 name='description'

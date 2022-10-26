@@ -61,10 +61,9 @@ function SignUp(){
         e.preventDefault()
 
         if (Object.keys(errors).length === 0 && input.email){
-            let info = await axios.post("/auth/register", input);
-            console.log(info.data)
+            let info = await axios.post("/authentication/register", input);
             setErrorMsg(info.data)
-            console.log(errorMsg)
+            alert('Has sido registrado.')
         }else{
             console.log('No entro')
         }

@@ -22,7 +22,7 @@ export function add_client(payload){
 
 export function create_client(payload){
     return function(dispatch){
-        return axios.post('/clients/add_client', payload)
+        return axios.post('clients/add_client', payload)
         .then(data => {
             dispatch({
                 type: CREATE_CLIENT,
