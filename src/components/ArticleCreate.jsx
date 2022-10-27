@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from "react-bootstrap/esm/Col";
+import { useNavigate } from "react-router-dom";
 
 export function ArticleCreate(){
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        let user_id = localStorage.getItem('id_user')
+        console.log(user_id)
+        if(user_id === null || user_id === '0'){
+            navigate('/')
+        }
+
+
+    }, [])
+
     return (
         <div className="gap={2} col-md-5 mx-auto mt-5 container">
             

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,15 @@ import useLocalStorage from '../hooks/use-localstorage';
 
 export function LogIn(){
 
+    
+
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if(localStorage.getItem('id_user') !== '0'){
+            navigate('/budget')
+        }
+    }) 
 
     const [input, setInput] = useState({
         username: '',

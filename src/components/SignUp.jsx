@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function SignUp(){
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if(localStorage.getItem('id_user') !== '0'){
+            navigate('/budget')
+        }
+    }) 
 
 
     const [errorMsg, setErrorMsg] = useState('')

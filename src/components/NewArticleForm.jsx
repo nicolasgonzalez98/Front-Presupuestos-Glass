@@ -71,7 +71,8 @@ export function NewArticleForm(){
         weight: '',
         width: '',
         height: '',
-        price:''
+        price:'',
+        userId: localStorage.getItem('id_user')
     })
 
     const [errors, setErrors] = useState({});
@@ -100,7 +101,8 @@ export function NewArticleForm(){
                 width: '',
                 weight: '',
                 height: '',
-                price:''
+                price:'',
+                userId: localStorage.getItem('id_user')
             })
         }else{
             log_error = 'Faltan datos obligatorios.'

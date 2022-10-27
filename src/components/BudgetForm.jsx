@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { create_client } from "../redux/actions";
+import { create_budget, create_client } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,7 +18,7 @@ export function BudgetForm(){
     useEffect(() => {
         const user_id = localStorage.getItem('id_user')
         console.log(user_id)
-        if(user_id === null){
+        if(user_id === null || user_id === '0'){
             navigate('/')
         }
 
@@ -36,8 +36,11 @@ export function BudgetForm(){
         dni: '',
         address: '',
         description: '',
-        phone: ''
+        phone: '',
+        userId: localStorage.getItem('id_user')
     })
+
+    const [withIva, setWithIva] = useState(false)
 
     function validate(input){
         let errors = {}
@@ -74,7 +77,10 @@ export function BudgetForm(){
     const [input, setInput] = useState({
         number_budget: '',
         client: {},
-        articles: []
+        articles: [],
+        iva: '0',
+        userId: localStorage.getItem('id_user'),
+        clientId: null
     })
 
     const [errors, setErrors] = useState({});
@@ -113,9 +119,34 @@ export function BudgetForm(){
         
     }
 
+    function handleActivate(e){
+        setWithIva(!withIva)
+        setInput({
+            ...input,
+            iva:'0'
+        })
+    }
+
+    function handleIva(e){
+        console.log(e.target.value)
+        setInput({
+            ...input,
+            iva:e.target.value
+        })
+    }
+        
+    
+
     function confirmBudget(client){
         dispatch(create_client(client))
+        .then(res => {
+            console.log(res)
+            input.clientId = res.data.id
+            dispatch(create_budget(input))
+        })
         
+        
+    
     }
 
     return (
@@ -154,6 +185,20 @@ export function BudgetForm(){
                         <div className="mb-3">
                             
                             <ArticleElement />
+                        </div>
+
+                        <div>
+                            <Form.Check 
+                                type="switch"
+                                id="custom-switch"
+                                label="Cobra IVA?"
+                                onChange={handleActivate}
+                            />
+                            <select disabled={withIva ? false : true} onChange={handleIva} defaultValue='Monto IVA...'>
+                                <option disabled>Monto IVA...</option>
+                                <option value={'10.5'} name='10.5'>10.5%</option>
+                                <option value={'21'} name='21'>21%</option>
+                            </select>
                         </div>
                         
                         <Button type='submit' variant="success">Crear presupuesto</Button>

@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, CREATE_CLIENT } from "../actions";
+import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT } from "../actions";
 
 const initialState = {
     articles: []
@@ -14,6 +14,10 @@ const rootReducer = (state = initialState, action) => {
         case CREATE_CLIENT:
             return {
                 ...state,
+            }
+        case CREATE_BUDGET:
+            return {
+                ...state
             }
         default:
             return state
