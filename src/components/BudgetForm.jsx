@@ -11,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { create_budget, create_client } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 export function BudgetForm(){
@@ -138,7 +139,7 @@ export function BudgetForm(){
     
 
     function confirmBudget(client){
-        dispatch(create_client(client))
+        axios.post('clients/add_client', client)
         .then(res => {
             console.log(res)
             input.clientId = res.data.id
@@ -207,11 +208,12 @@ export function BudgetForm(){
                 <>  
                 <div className="col-md-5 mx-auto mt-5 container">
                     <h4>Vista previa</h4>
-                    <PDFViewer width={'auto'} height={'auto'} className='mt-3 '>
+                    <PDFViewer width={'500px'} height={'500px'} position={'center'} className='mt-3 '>
                         <BudgetPDF
                             number_budget={input.number_budget}
                             articles={input.articles}
                             client={client}
+                            width={'200'} 
                         />
                     </PDFViewer>
                     <PDFDownloadLink 
@@ -220,12 +222,14 @@ export function BudgetForm(){
                             number_budget={input.number_budget}
                             articles={input.articles}
                             client={client}
+                            
                         />
                     }
                         onClick={() => confirmBudget(client)}
                     >
                         Descargar PDF
                     </PDFDownloadLink>
+                    <Button variant="primary" type="button" onClick={() => setFinished(!finished)}>Editar presupuesto</Button>
                 </div>
                 </>
             }
