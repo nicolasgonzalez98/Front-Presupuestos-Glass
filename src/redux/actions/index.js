@@ -6,6 +6,9 @@ export const ADD_PRODUCT = 'ADD_PRODUCT'
 export const ADD_CLIENT= 'ADD_CLIENT'
 export const CREATE_CLIENT = 'CREATE_CLIENT'
 export const CREATE_BUDGET = 'CREATE_BUDGET'
+export const GET_BUDGETS_BY_USER = 'GET_BUDGETS_BY_USER'
+export const GET_CLIENTS_BY_USER = 'GET_CLIENTS_BY_USER'
+export const GET_ARTICLES_BY_USER = 'GET_ARTICLES_BY_USER'
 
 //Productos
 
@@ -13,6 +16,18 @@ export function add_product(payload){
     return {
         type: ADD_PRODUCT,
         payload
+    }
+}
+
+export function get_articles_by_user(id){
+    return function(dispatch){
+        return axios.get(`articles/${id}`)
+        .then(data => {
+            dispatch({
+                type: GET_ARTICLES_BY_USER,
+                payload: data
+            })
+        })
     }
 }
 
@@ -37,6 +52,18 @@ export function create_client(payload){
     }
 }
 
+export function get_clients_by_user(id){
+    return function(dispatch){
+        return axios.get(`clients/${id}`)
+        .then(data => {
+            dispatch({
+                type: GET_CLIENTS_BY_USER,
+                payload: data
+            })
+        })
+    }
+}
+
 //Presupuestos
 
 export function create_budget(payload){
@@ -45,6 +72,18 @@ export function create_budget(payload){
         .then(data => {
             dispatch({
                 type: CREATE_BUDGET,
+                payload: data
+            })
+        })
+    }
+}
+
+export function get_budgets_by_user(id){
+    return function(dispatch){
+        return axios.get(`budgets/${id}`)
+        .then(data => {
+            dispatch({
+                type: GET_BUDGETS_BY_USER,
                 payload: data
             })
         })

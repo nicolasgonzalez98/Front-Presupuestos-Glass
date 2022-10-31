@@ -35,14 +35,18 @@ function NavGlassDoor() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                    <Nav.Link href='/budget'>Crear presupuesto</Nav.Link>
+                    <NavDropdown title='Presupuestos'>
+                        <NavDropdown.Item href='/budget'>Crear presupuesto</NavDropdown.Item>
+                        <NavDropdown.Item href='/budget'>Mis presupuestos</NavDropdown.Item>
+                    </NavDropdown>
+                    
                     <NavDropdown title="Clientes" id="collasible-nav-dropdown" >
                         <NavDropdown.Item href="#action/3.1">Mis clientes</NavDropdown.Item>
                         <NavDropdown.Item href='/create_client'>Agregar cliente</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Inventario" id="collasible-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Mi Inventario</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">
+                        <NavDropdown.Item href="/create_article">
                             Crear articulo
                         </NavDropdown.Item>
                         {/* <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
