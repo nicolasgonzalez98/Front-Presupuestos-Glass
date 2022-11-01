@@ -14,7 +14,9 @@ const ArticleElement = () => {
     
     const my_products = useSelector(state => state.articles)
 
-    
+    function handleTrash(index){
+        console.log(index)
+    }
 
    
 
@@ -35,7 +37,7 @@ const ArticleElement = () => {
                                 <div className="fw-bold">{e.name}</div>
                                 Precio: {e.price}
                             </div>
-                            <Button className='mt-2 me' variant="secondary" size="sm">
+                            <Button className='mt-2 me' variant="secondary" size="sm" onClick={() => handleTrash(index)}>
                                 <IoTrash />
                             </Button>
                     </ListGroup.Item>

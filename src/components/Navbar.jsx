@@ -37,15 +37,15 @@ function NavGlassDoor() {
                 <Nav className="me-auto">
                     <NavDropdown title='Presupuestos'>
                         <NavDropdown.Item href='/budget'>Crear presupuesto</NavDropdown.Item>
-                        <NavDropdown.Item href='/budget'>Mis presupuestos</NavDropdown.Item>
+                        <NavDropdown.Item href='/my_budgets'>Mis presupuestos</NavDropdown.Item>
                     </NavDropdown>
                     
                     <NavDropdown title="Clientes" id="collasible-nav-dropdown" >
-                        <NavDropdown.Item href="#action/3.1">Mis clientes</NavDropdown.Item>
+                        <NavDropdown.Item href="/my_clients">Mis clientes</NavDropdown.Item>
                         <NavDropdown.Item href='/create_client'>Agregar cliente</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Inventario" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Mi Inventario</NavDropdown.Item>
+                        <NavDropdown.Item href="/my_articles">Mi Inventario</NavDropdown.Item>
                         <NavDropdown.Item href="/create_article">
                             Crear articulo
                         </NavDropdown.Item>
