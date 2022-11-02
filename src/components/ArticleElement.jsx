@@ -6,17 +6,20 @@ import { IoTrash } from "react-icons/io5";
 
 import Form from 'react-bootstrap/Form';
 
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { NewArticleForm } from "./NewArticleForm";
+import { remove_element_from_list } from '../redux/actions';
 
 const ArticleElement = () => {
 
     
     const my_products = useSelector(state => state.articles)
 
-    function handleTrash(index){
-        console.log(index)
+    function handleTrash(name){
+        dispatch(remove_element_from_list(name))
     }
+
+    const dispatch = useDispatch()
 
    
 
@@ -37,7 +40,7 @@ const ArticleElement = () => {
                                 <div className="fw-bold">{e.name}</div>
                                 Precio: {e.price}
                             </div>
-                            <Button className='mt-2 me' variant="secondary" size="sm" onClick={() => handleTrash(index)}>
+                            <Button className='mt-2 me' variant="secondary" size="sm" onClick={() => handleTrash(e.name)}>
                                 <IoTrash />
                             </Button>
                     </ListGroup.Item>
@@ -46,7 +49,9 @@ const ArticleElement = () => {
         </ListGroup>
         <hr />
         </>}
-        <NewArticleForm />
+        <NewArticleForm 
+            articles={my_products}
+        />
         
         </>
     )

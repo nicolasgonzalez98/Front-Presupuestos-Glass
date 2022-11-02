@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER } from "../actions";
+import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST } from "../actions";
 
 const initialState = {
     articles: [],
@@ -19,6 +19,12 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 my_articles: action.payload.data
+            }
+        case REMOVE_ELEMENT_FROM_LIST:
+            
+            return {
+                ...state,
+                articles: state.articles.filter(e => e.name !== action.payload)
             }
         ///////////////////////
         //CLIENTES

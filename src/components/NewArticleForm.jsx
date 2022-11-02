@@ -8,10 +8,11 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Col from "react-bootstrap/esm/Col";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { capitalizeFirstLetter } from "../utilities";
 
 
 
-export function NewArticleForm(){
+export function NewArticleForm({articles}){
 
     function validate(input){
         let errors = {}
@@ -92,8 +93,11 @@ export function NewArticleForm(){
     }
 
     function addProduct(){
-        let log_error;
-        if (Object.keys(errors).length === 0 && product.name) {
+        
+        let elemento_repetido = articles.find(e => e.name === capitalizeFirstLetter(product.name))
+        
+        if (Object.keys(errors).length === 0 && product.name && !elemento_repetido) {
+            product.name = capitalizeFirstLetter(product.name)
             dispatch(add_product(product))
             setProduct({
                 name: '',
@@ -105,7 +109,8 @@ export function NewArticleForm(){
                 userId: localStorage.getItem('id_user')
             })
         }else{
-            log_error = 'Faltan datos obligatorios.'
+            
+            console.log('NOP')
         }
         
     }

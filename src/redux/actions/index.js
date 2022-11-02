@@ -9,6 +9,7 @@ export const CREATE_BUDGET = 'CREATE_BUDGET'
 export const GET_BUDGETS_BY_USER = 'GET_BUDGETS_BY_USER'
 export const GET_CLIENTS_BY_USER = 'GET_CLIENTS_BY_USER'
 export const GET_ARTICLES_BY_USER = 'GET_ARTICLES_BY_USER'
+export const REMOVE_ELEMENT_FROM_LIST = 'REMOVE_ELEMENT_FROM_LIST'
 
 //Productos
 
@@ -28,6 +29,13 @@ export function get_articles_by_user(id){
                 payload: data
             })
         })
+    }
+}
+
+export function remove_element_from_list(payload){
+    return {
+        type: REMOVE_ELEMENT_FROM_LIST,
+        payload
     }
 }
 
