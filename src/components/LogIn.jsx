@@ -57,11 +57,20 @@ export function LogIn(){
                     return res.data;
                 })
                 .catch((error) => console.log(error));
-                
-                let { log_in, id } = login
 
-                setIdUser(id)
-                navigate('/budget')
+                if(typeof login === 'string'){
+                    setMsg(login)
+                    setTimeout(() => {
+                        setMsg('')
+                    }, 5000)
+                }else{
+                    let { log_in, id } = login
+
+                    setIdUser(id)
+                    navigate('/budget')
+                }
+                
+                
                 
             }
         }
@@ -100,10 +109,11 @@ export function LogIn(){
                         placeholder="******"
                         onChange={handleChange}
                     />
+                    <Form.Text style={{color:'red'}}>
+                        {msg}
+                    </Form.Text>
                 </Form.Group>
-                {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group> */}
+                
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>

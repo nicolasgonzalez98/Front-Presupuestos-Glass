@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
-//import { useNavigate } from 'react-router-dom';
+
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -12,6 +12,11 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from 'react-bootstrap/Button';
 import { create_client } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
+
+// CommonJS
+
 
 export function ClientCreate(){
     
@@ -39,7 +44,7 @@ export function ClientCreate(){
         userId: localStorage.getItem('id_user')
     })
 
-    
+    const [catchErrorsClient, setCatchErrorsClient] = useState(false)
 
     function validateClient(input){
         let errors = {}
@@ -49,7 +54,7 @@ export function ClientCreate(){
         }
 
         if(!input.surname){
-            errors.name = 'No ingresaste el apellido del cliente'
+            errors.surname = 'No ingresaste el apellido del cliente'
         }
 
         if(!input.dni){
@@ -84,18 +89,29 @@ export function ClientCreate(){
     function handleSubmit(e){
         e.preventDefault()
         if(Object.keys(errorsClient).length === 0 && client.name){
+            setCatchErrorsClient(false)
             dispatch(create_client(client))
+            .then(
+                setClient({
+                    name: '',
+                    surname: '',
+                    dni: '',
+                    address: '',
+                    description: '',
+                    phone: '',
+                    userId: localStorage.getItem('id_user')
+                })
+            )
+            .then(
+                Swal.fire(
+                    'Cliente creado correctamente!',
+                    '',
+                    'success'
+                )
+            )
             
-            setClient({
-                name: '',
-                surname: '',
-                dni: '',
-                address: '',
-                description: '',
-                phone: ''
-            })
         }else{
-            console.log('error')
+            setCatchErrorsClient(true)
         }
     }
 
@@ -105,25 +121,38 @@ export function ClientCreate(){
                 <Row className="mb-3">
                     <Col>
                         <FloatingLabel label='Nombre del cliente'>
-                            <input
+                            <Form.Control
                                 type='text'
                                 name='name'
-                                
+                                isInvalid={catchErrorsClient ? (errorsClient.name ? true : false) : false}
                                 value={client.name}
                                 onChange={handleChange}
                                 className='form-control'
                             />
+                            {catchErrorsClient ? (errorsClient.name ? 
+                                    <Form.Control.Feedback type="invalid">
+                                        {errorsClient.name}
+                                    </Form.Control.Feedback> : 
+                                    false) : 
+                            <></>}
                         </FloatingLabel>
                     </Col>
                     <Col>
                         <FloatingLabel label='Apellido del cliente'>
-                            <input
+                            <Form.Control
                                 type='text'
                                 name='surname'
+                                isInvalid={catchErrorsClient ? (errorsClient.surname ? true : false) : false}
                                 value={client.surname}
                                 onChange={handleChange}
                                 className='form-control'
                             />
+                            {catchErrorsClient ? (errorsClient.surname ? 
+                                    <Form.Control.Feedback type="invalid">
+                                        {errorsClient.surname}
+                                    </Form.Control.Feedback> : 
+                                    false) : 
+                            <></>}
                         </FloatingLabel>
                     </Col>
                 </Row>
@@ -135,32 +164,40 @@ export function ClientCreate(){
                             <Row className="mb-3">
                                 <Form.Group as={Col}>
                                     <FloatingLabel label='Cuit/DNI del cliente'>
-                                        <input
+                                        <Form.Control
                                             className="form-control"
                                             type='text'
                                             name='dni'
+                                            isInvalid={catchErrorsClient ? (errorsClient.dni ? true : false) : false}
                                             value={client.dni}
                                             onChange={handleChange}
                                         />
+                                        {catchErrorsClient ? (errorsClient.dni ? 
+                                            <Form.Control.Feedback type="invalid">
+                                                {errorsClient.dni}
+                                            </Form.Control.Feedback> : 
+                                            false) : 
+                                        <></>}
                                     </FloatingLabel>
                                 </Form.Group>
                                 <Form.Group as={Col}>
                                     <FloatingLabel label='Telefono'>
                                     
-                                        <input
+                                        <Form.Control
                                             type='text'
                                             name='phone'
                                             className="form-control"
                                             value={client.phone}
                                             onChange={handleChange}
                                         />
+                                        
                                     </FloatingLabel>
                                 </Form.Group>
                             </Row>
                             <Row className="mb-3">
                                 <Form.Group as={Col}>
                                     <FloatingLabel label='Direccion'>
-                                        <input
+                                        <Form.Control
                                             type='text'
                                             name='address'
                                             className="form-control"
@@ -179,14 +216,22 @@ export function ClientCreate(){
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                 <Form.Label>Descripcion del cliente: </Form.Label>
                                 
-                                <textarea
+                                <Form.Control
+                                    as='textarea'
                                     class="form-control"
                                     type='text'
                                     rows={3} 
                                     name='description'
+                                    isInvalid={catchErrorsClient ? (errorsClient.description ? true : false) : false}
                                     value={client.description}
                                     onChange={handleChange}
                                 />
+                                {catchErrorsClient ? (errorsClient.description ? 
+                                            <Form.Control.Feedback type="invalid">
+                                                {errorsClient.description}
+                                            </Form.Control.Feedback> : 
+                                            false) : 
+                                <></>}
                             </Form.Group>
                             
                     </Accordion.Body>

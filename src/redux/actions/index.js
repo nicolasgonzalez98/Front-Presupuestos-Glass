@@ -10,6 +10,7 @@ export const GET_BUDGETS_BY_USER = 'GET_BUDGETS_BY_USER'
 export const GET_CLIENTS_BY_USER = 'GET_CLIENTS_BY_USER'
 export const GET_ARTICLES_BY_USER = 'GET_ARTICLES_BY_USER'
 export const REMOVE_ELEMENT_FROM_LIST = 'REMOVE_ELEMENT_FROM_LIST'
+export const DELETE_CLIENT = 'DELETE_CLIENT'
 
 //Productos
 
@@ -55,6 +56,19 @@ export function create_client(payload){
             dispatch({
                 type: CREATE_CLIENT,
                 payload: data
+            })
+        })
+    }
+}
+
+export function delete_client(id){
+    return function(dispatch){
+        return axios.delete(`delete/${id}`)
+        .then(data => {
+            console.log(data)
+            dispatch({
+                type: DELETE_CLIENT,
+                payload: id
             })
         })
     }

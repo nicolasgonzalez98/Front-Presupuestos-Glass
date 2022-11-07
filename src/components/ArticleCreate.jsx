@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from "react-bootstrap/esm/Col";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function ArticleCreate(){
 
@@ -18,13 +19,20 @@ export function ArticleCreate(){
 
     }, [])
 
+    const [article, setArticle] = useState({
+        name: '',
+        weight_price: '',
+        area_price: '',
+        unity_price: ''
+    })
+
     return (
         <div className="gap={2} col-md-5 mx-auto mt-5 container">
             
             <Form>
                 <Form.Group className="mb-3">
                     <Form.Label>Nombre del articulo:</Form.Label>
-                    <input
+                    <Form.Control
                         type='text'
                         name='name'
                         placeholder='Nombre del articulo' 

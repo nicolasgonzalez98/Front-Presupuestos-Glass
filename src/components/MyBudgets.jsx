@@ -20,6 +20,12 @@ export function MyBudgets(){
     const navigate = useNavigate()
 
     const my_budgets = useSelector(state => state.budgets)
+
+    return (
+        <div>
+            
+        </div>
+    )
 }
 
 export default MyBudgets;

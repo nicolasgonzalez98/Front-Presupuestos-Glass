@@ -5,11 +5,12 @@ import BudgetPDF from "./BudgetPDF";
 import { ClientInfo } from "./ClientInfo";
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { useDispatch } from 'react-redux';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { create_budget, create_client } from "../redux/actions";
+import { create_budget } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -30,6 +31,10 @@ export function BudgetForm(){
     const navigate = useNavigate()
 
     const articulos = useSelector(state => state.articles)
+    //ERRORES
+    const [catchErrors, setCatchErrors] = useState(false)
+    const [catchErrorsClient, setCatchErrorsClient] = useState(false)
+    //////
     const [finished, setFinished] = useState(false)
     const [client, setClient] = useState({
         name: '',
@@ -61,7 +66,7 @@ export function BudgetForm(){
         }
 
         if(!input.surname){
-            errors.name = 'No ingresaste el apellido del cliente'
+            errors.surname = 'No ingresaste el apellido del cliente'
         }
 
         if(!input.dni){
@@ -109,12 +114,23 @@ export function BudgetForm(){
         e.preventDefault()
         if (Object.keys(errors).length === 0 && Object.keys(errorsClient).length === 0
             && client.name && input.number_budget
-        ){
+        ){  
+            setCatchErrors(false)
+            setCatchErrorsClient(false)
             input.articles = articulos
             input.client = client
             setFinished(!finished)
         }else{
-            console.log('No entro')
+            if(Object.keys(errors).length > 0){
+                setCatchErrors(true)
+            }
+
+            if(Object.keys(errorsClient).length > 0){
+                console.log('entre aca')
+                setCatchErrorsClient(true)
+            }
+            console.log(errorsClient)
+            console.log('si aca')
         }
         
         
@@ -139,9 +155,9 @@ export function BudgetForm(){
     
 
     function confirmBudget(client){
+        console.log(client)
         axios.post('clients/add_client', client)
         .then(res => {
-            console.log(res)
             input.clientId = res.data.id
             dispatch(create_budget(input))
         })
@@ -159,14 +175,21 @@ export function BudgetForm(){
                         <h4 className="mb-3">Crear nuevo presupuesto</h4>
                         <Form.Group className="mb-3">
                             <Form.Label>Nro. de presupuesto:</Form.Label>
-                            <input
+                            <Form.Control 
                                 type='text'
                                 name='number_budget'
                                 placeholder='Presupuesto N°: ' 
                                 value={input.number_budget}
                                 onChange={handleChange}
                                 className='form-control'
+                                isInvalid={catchErrors ? (errors.number_budget ? true : false) : false}
                             />
+                            {catchErrors ? (errors.number_budget ? 
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.number_budget}
+                                </Form.Control.Feedback> : 
+                                false) : 
+                            <></>}
                         </Form.Group>
                         
                         
@@ -179,6 +202,8 @@ export function BudgetForm(){
                                 setErrorsClient={setErrorsClient}
                                 validateClient={validateClient}
                                 errorsClient={errorsClient}
+                                catchErrorsClient={catchErrorsClient}
+                                setCatchErrorsClient={setCatchErrorsClient}
                             />
                         </div>
                         <hr />
@@ -188,19 +213,19 @@ export function BudgetForm(){
                             <ArticleElement />
                         </div>
 
-                        <div>
-                            <Form.Check 
-                                type="switch"
-                                id="custom-switch"
-                                label="Cobra IVA?"
-                                onChange={handleActivate}
-                            />
-                            <select disabled={withIva ? false : true} onChange={handleIva} defaultValue='Monto IVA...'>
-                                <option disabled>Monto IVA...</option>
+                        <Form.Group className="mb-3">
+                            <FloatingLabel
+                                controlId="floatingSelectGrid"
+                                label="Desea aplicar IVA?"
+                            >
+                            <Form.Select size='sm'  onChange={handleIva} defaultValue='Monto IVA...'>
+                                
+                                <option value={'0'} name='0'>No</option>
                                 <option value={'10.5'} name='10.5'>10.5%</option>
                                 <option value={'21'} name='21'>21%</option>
-                            </select>
-                        </div>
+                            </Form.Select>
+                            </FloatingLabel>
+                        </Form.Group>
                         
                         <Button type='submit' variant="success">Crear presupuesto</Button>
                     </Form>
