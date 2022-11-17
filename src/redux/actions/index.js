@@ -11,6 +11,8 @@ export const GET_CLIENTS_BY_USER = 'GET_CLIENTS_BY_USER'
 export const GET_ARTICLES_BY_USER = 'GET_ARTICLES_BY_USER'
 export const REMOVE_ELEMENT_FROM_LIST = 'REMOVE_ELEMENT_FROM_LIST'
 export const DELETE_CLIENT = 'DELETE_CLIENT'
+export const EDIT_CLIENT = 'EDIT_CLIENT'
+export const GET_BUDGETS_BY_CLIENT = 'GET_BUDGETS_BY_CLIENT'
 
 //Productos
 
@@ -63,7 +65,7 @@ export function create_client(payload){
 
 export function delete_client(id){
     return function(dispatch){
-        return axios.delete(`delete/${id}`)
+        return axios.delete(`clients/delete/${id}`)
         .then(data => {
             console.log(data)
             dispatch({
@@ -80,6 +82,18 @@ export function get_clients_by_user(id){
         .then(data => {
             dispatch({
                 type: GET_CLIENTS_BY_USER,
+                payload: data
+            })
+        })
+    }
+}
+
+export function edit_client(id, info){
+    return function(dispatch){
+        return axios.put(`clients/update/${id}`, info)
+        .then(data => {
+            dispatch({
+                type: EDIT_CLIENT,
                 payload: data
             })
         })
@@ -106,6 +120,18 @@ export function get_budgets_by_user(id){
         .then(data => {
             dispatch({
                 type: GET_BUDGETS_BY_USER,
+                payload: data
+            })
+        })
+    }
+}
+
+export function get_budgets_by_client(id){
+    return function(dispatch){
+        return axios.get(`budgets/client/${id}`)
+        .then(data => {
+            dispatch({
+                type: GET_BUDGETS_BY_CLIENT,
                 payload: data
             })
         })

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { useState } from 'react';
+import { formatDate } from '../utilities';
+
 
 
 
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
   },
   descripcion: {
     fontSize: 15, 
-    maxWidth: 240, 
+    minWidth: 240,
+    minHeight: 100,
     border: 2, 
     borderColor: 'black'
   }
@@ -119,13 +121,13 @@ const stylesArticles = StyleSheet.create({
 })
 
 // Create Document Component
-function BudgetPDF({number_budget, articles, client}){
-
+function BudgetPDF({number_budget, articles, client, iva}){
+  
   function superficie(){
     let total = 0
 
     for(let i = 0; i < articles.length; i++){
-      total += articles[i].width * articles[i].height
+      total += (articles[i].width * articles[i].height)*parseInt(articles[i].quantity)
     }
 
     return total 
@@ -135,7 +137,8 @@ function BudgetPDF({number_budget, articles, client}){
     let total = 0
 
     for(let i = 0; i < articles.length; i++){
-      total += articles[i].weight
+      console.log(articles[i].weight)
+      total += parseFloat(articles[i].weight)*parseInt(articles[i].quantity)
     }
 
     return total 
@@ -151,11 +154,27 @@ function BudgetPDF({number_budget, articles, client}){
     return total 
   }
 
+  function total_con_iva(subprice, iva){
+    switch(iva){
+      case '0':
+        return subprice
+      case '10.5':
+        return subprice*1.105
+      case '21':
+        return subprice*1.21
+      default:
+            return subprice
+    }
+  }
+
   let sup_total = superficie()
 
   let peso_total = total_weight()
+  console.log(peso_total)
 
   let subtotal = subprice()
+  
+  let total_con_impuestos = total_con_iva(subtotal, iva).toFixed(2)
   
   return (
   <Document>
@@ -168,8 +187,10 @@ function BudgetPDF({number_budget, articles, client}){
       </View>
       <View style={styles.client}>
         <Text>Cliente: {`${client.name} ${client.surname}`}</Text>
-        <Text style={styles.date}>Fecha</Text>
+        <Text>{formatDate(Date.now())}</Text>
+        
       </View>
+      
       <table style={{borderBottom: 2, borderBottomColor: 'black'}}>
         <thead>
           <tr style={stylesArticles.headers2}>
@@ -235,22 +256,27 @@ function BudgetPDF({number_budget, articles, client}){
           </div>
           <div style={styles.individuales}>
             <Text>IVA</Text>
-            <Text>0</Text>
+            <Text>{iva}%</Text>
           </div>
           <div style={styles.individuales}>
             <Text>Total</Text>
-            <Text>${subtotal}</Text>
+            <Text>${total_con_impuestos}</Text>
           </div>
         </section>
       </div>
-      <div style={styles.bottom_section}>
-        <section style={styles.descripcion}>
-          <Text >
-            El cliente Nicolas Gonzalez vive en Calle Falsa 123, puerta negra, fachada blanca. Frente a un parque
-            y al lado de una carniceria
-          </Text>
-        </section>
-      </div>
+
+      {client.description && 
+      <>
+        <div style={styles.bottom_section}>
+          <section style={styles.descripcion}>
+            <Text >
+              {client.description}
+            </Text>
+          </section>
+        </div>
+      </>
+      }
+      
       
 
 

@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button';
 import { create_budget } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { formatDate } from "../utilities";
 
 
 export function BudgetForm(){
@@ -46,8 +47,6 @@ export function BudgetForm(){
         userId: localStorage.getItem('id_user')
     })
 
-    const [withIva, setWithIva] = useState(false)
-
     function validate(input){
         let errors = {}
 
@@ -57,6 +56,8 @@ export function BudgetForm(){
 
         return errors
     }
+
+    
 
     function validateClient(input){
         let errors = {}
@@ -86,7 +87,8 @@ export function BudgetForm(){
         articles: [],
         iva: '0',
         userId: localStorage.getItem('id_user'),
-        clientId: null
+        clientId: null,
+        createdAt: formatDate(Date.now())
     })
 
     const [errors, setErrors] = useState({});
@@ -136,14 +138,6 @@ export function BudgetForm(){
         
     }
 
-    function handleActivate(e){
-        setWithIva(!withIva)
-        setInput({
-            ...input,
-            iva:'0'
-        })
-    }
-
     function handleIva(e){
         console.log(e.target.value)
         setInput({
@@ -155,7 +149,6 @@ export function BudgetForm(){
     
 
     function confirmBudget(client){
-        console.log(client)
         axios.post('clients/add_client', client)
         .then(res => {
             input.clientId = res.data.id
@@ -238,16 +231,17 @@ export function BudgetForm(){
                             number_budget={input.number_budget}
                             articles={input.articles}
                             client={client}
-                            width={'200'} 
+                            iva={input.iva}
+                            
                         />
                     </PDFViewer>
                     <PDFDownloadLink 
                         document={
-                        <BudgetPDF 
+                        <BudgetPDF
                             number_budget={input.number_budget}
                             articles={input.articles}
                             client={client}
-                            
+                            iva={input.iva}
                         />
                     }
                         onClick={() => confirmBudget(client)}
