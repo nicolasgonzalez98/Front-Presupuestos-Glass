@@ -5,6 +5,7 @@ import Col from "react-bootstrap/esm/Col";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 export function ArticleCreate(){
 
@@ -26,7 +27,8 @@ export function ArticleCreate(){
         area_price: '',
         unity_price: '',
         type: 'bulk',
-        unity: 'M2'
+        unity: 'M2',
+        userId: localStorage.getItem('id_user')
     })
 
     function handleChange(e){
@@ -63,10 +65,19 @@ export function ArticleCreate(){
                 weight_price: article.type !== 'weight' ? 0 : parseInt(article.weight_price),
                 unity_price: article.type !== 'quantity' ? 0 : parseInt(article.unity_price)
             })
+
+            axios.post('articles/add_article', article)
+            .then(data => {
+                console.log('Subido correctamente!')
+            })
+            .catch(err => {
+                console.log('No se subio nada')
+                console.log(err)
+            })
         }
 
 
-        
+
     }
 
     return (
@@ -79,7 +90,7 @@ export function ArticleCreate(){
                         type='text'
                         name='name'
                         placeholder='Nombre del articulo' 
-                        // value={input.number_budget}
+                        value={article.name}
                         onChange={handleChange}
                         className='form-control'
                     />

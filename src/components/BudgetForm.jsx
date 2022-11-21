@@ -132,7 +132,7 @@ export function BudgetForm(){
                 setCatchErrorsClient(true)
             }
             console.log(errorsClient)
-            console.log('si aca')
+            
         }
         
         

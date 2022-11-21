@@ -54,7 +54,7 @@ export function MyClients(){
 
     //EDITAR CLIENTES
     const [showEdit, setShowEdit] = useState(false);
-    const [editClient, setEditClient] = useState({})
+    const [editClient, setEditClient] = useState({});
 
     function handleClose(){
         setShowEdit(false)
@@ -62,7 +62,6 @@ export function MyClients(){
         setErrorsClient({})
     }
     function handleShow(client){
-        console.log(my_clientes)
         setEditClient(client)
         setShowEdit(true)
     }
@@ -127,7 +126,6 @@ export function MyClients(){
             )
             
             setShowEdit(false)
-            console.log(my_clientes)
         }else{
             setCatchErrorsClient(true)
         }

@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, DELETE_CLIENT, EDIT_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_CLIENT, GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST } from "../actions";
+import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, DELETE_ARTICLE, DELETE_CLIENT, EDIT_ARTICLE, EDIT_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_CLIENT, GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST } from "../actions";
 
 const initialState = {
     articles: [],
@@ -27,6 +27,23 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 articles: state.articles.filter(e => e.name !== action.payload)
             }
+        case EDIT_ARTICLE:
+            let article_editted = action.payload.data
+            
+            
+            let nuevo= state.my_articles.filter( e => e.id !== article_editted.id)
+            nuevo = nuevo.concat(article_editted).sort((a,b) => a.id - b.id)
+            console.log(nuevo)
+            return {
+                ...state,
+                my_articles: nuevo
+            }
+        case DELETE_ARTICLE:
+            return {
+                ...state,
+                my_articles: state.my_articles.filter(e => e.id !== action.payload),
+                
+            }
         ///////////////////////
         //CLIENTES
         case CREATE_CLIENT:
@@ -34,7 +51,6 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
             }
         case DELETE_CLIENT:
-            console.log(action.payload)
             return {
                 ...state,
                 clients: state.clients.filter(e => e.id !== action.payload),
@@ -47,13 +63,12 @@ const rootReducer = (state = initialState, action) => {
             }
         case EDIT_CLIENT:
             let elemento = action.payload.data
-            console.log(elemento)
             for(let i = 0; i < state.clients.length; i++){
                 if(state.clients[i].id === elemento.id){
                     state.clients.splice(i, 1, elemento)
                 }
             }
-            console.log(state.clients)
+            
             return {
                 ...state,
                 clients: state.clients

@@ -13,6 +13,8 @@ export const REMOVE_ELEMENT_FROM_LIST = 'REMOVE_ELEMENT_FROM_LIST'
 export const DELETE_CLIENT = 'DELETE_CLIENT'
 export const EDIT_CLIENT = 'EDIT_CLIENT'
 export const GET_BUDGETS_BY_CLIENT = 'GET_BUDGETS_BY_CLIENT'
+export const EDIT_ARTICLE = 'EDIT_ARTICLE'
+export const DELETE_ARTICLE = 'DELETE_ARTICLE'
 
 //Productos
 
@@ -39,6 +41,30 @@ export function remove_element_from_list(payload){
     return {
         type: REMOVE_ELEMENT_FROM_LIST,
         payload
+    }
+}
+
+export function edit_article(id, payload){
+    return function(dispatch){
+        return axios.put(`articles/edit_article/${id}`, payload)
+        .then(data => {
+            dispatch({
+                type: EDIT_ARTICLE,
+                payload: data
+            })
+        })
+    }
+}
+
+export function delete_article(id){
+    return function(dispatch){
+        return axios.delete(`articles/delete_article/${id}`)
+        .then(data => {
+            dispatch({
+                type: DELETE_ARTICLE,
+                payload: id
+            })
+        })
     }
 }
 
