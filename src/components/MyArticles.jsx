@@ -255,13 +255,13 @@ export function MyArticles(){
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" type="button" onClick={handleClose}>
-                    Cancelar
-                </Button>
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                    Guardar cambios
-                </Button>
-            </Modal.Footer>
+                    <Button variant="secondary" type="button" onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" type="submit" onClick={handleSubmit}>
+                        Guardar cambios
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     )

@@ -10,42 +10,48 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { create_budget } from "../redux/actions";
+import { create_budget, get_clients_by_user } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formatDate } from "../utilities";
+import Modal from "react-bootstrap/Modal";
+//import Autosuggest from 'react-autosuggest';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 
 
 export function BudgetForm(){
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const user_id = localStorage.getItem('id_user')
-        console.log(user_id)
+        
         if(user_id === null || user_id === '0'){
             navigate('/')
+        }else{
+            dispatch(get_clients_by_user(user_id))
         }
+
 
 
     }, [])
 
-    const dispatch = useDispatch()
+    
     const navigate = useNavigate()
 
     const articulos = useSelector(state => state.articles)
+    const clientes = useSelector(state => state.clients)
     //ERRORES
     const [catchErrors, setCatchErrors] = useState(false)
     const [catchErrorsClient, setCatchErrorsClient] = useState(false)
     //////
     const [finished, setFinished] = useState(false)
-    const [client, setClient] = useState({
-        name: '',
-        surname: '',
-        dni: '',
-        address: '',
-        description: '',
-        phone: '',
-        userId: localStorage.getItem('id_user')
-    })
+    
+
+    
 
     function validate(input){
         let errors = {}
@@ -56,6 +62,80 @@ export function BudgetForm(){
 
         return errors
     }
+
+
+    //CLIENTES
+    const [showCreateClient, setShowCreateClient] = useState(false);
+    const [client, setClient] = useState({
+        name: '',
+        surname: '',
+        dni: '',
+        address: '',
+        description: '',
+        phone: '',
+        userId: localStorage.getItem('id_user')
+    })
+
+    async function seleccionarCliente(e){
+        if(!e.target.outerText && !e.target.defaultValue){
+            setClient({
+                name: '',
+                surname: '',
+                dni: '',
+                address: '',
+                description: '',
+                phone: '',
+                userId: localStorage.getItem('id_user')
+            })
+        }
+        if(e.key !== 'Enter'){
+            
+            setClient(clientes[parseInt(e.target.outerText.split(' '))-1])
+            
+        }else{
+            setTimeout(() => {
+                setClient(clientes[parseInt(e.target.defaultValue.split(' '))-1])
+                
+            }, 50)
+        }
+        
+        
+    }
+
+    function handleShowCreateClient(){
+        setShowCreateClient(true)
+    }
+
+    function handleCloseCreateClient(){
+        setClient({
+            name: '',
+            surname: '',
+            dni: '',
+            address: '',
+            description: '',
+            phone: '',
+            userId: localStorage.getItem('id_user')
+        })
+        setShowCreateClient(false)
+        
+    }
+
+    // const onChange = (e, {newValue}) => {
+    //     setValorCliente(newValue)
+    // }
+
+    // const inputProps = {
+    //     placeholder:"Nombre o apellido del cliente",
+    //     value: valorCliente,
+    //     onChange
+        
+    // }
+
+    // const eventEnter= (e) => {
+    //     if(e.key === 'Enter'){
+    //         var split = e.target.value.split()
+    //     }
+    // }
 
     
 
@@ -79,6 +159,16 @@ export function BudgetForm(){
         }
 
         return errors
+    }
+
+    function handleSubmitCreateClient(){
+        if(Object.keys(errorsClient).length === 0 && client.name){
+            setCatchErrorsClient(false)
+            setShowCreateClient(false)
+            
+        }else{
+            setCatchErrorsClient(true)
+        }
     }
 
     const [input, setInput] = useState({
@@ -128,10 +218,10 @@ export function BudgetForm(){
             }
 
             if(Object.keys(errorsClient).length > 0){
-                console.log('entre aca')
+                
                 setCatchErrorsClient(true)
             }
-            console.log(errorsClient)
+            
             
         }
         
@@ -149,11 +239,18 @@ export function BudgetForm(){
     
 
     function confirmBudget(client){
-        axios.post('clients/add_client', client)
-        .then(res => {
-            input.clientId = res.data.id
+        if(client.id){
+            input.clientId = client.id
             dispatch(create_budget(input))
-        })
+        }else{
+            axios.post('clients/add_client', client)
+            .then(res => {
+                input.clientId = res.data.id
+                dispatch(create_budget(input))
+            })
+        }
+
+        
         
         
     
@@ -189,15 +286,64 @@ export function BudgetForm(){
 
                         <div className="mb-3">
                             <Form.Label>Cliente: </Form.Label>
-                            <ClientInfo 
-                                client={client}
-                                setClient={setClient}
-                                setErrorsClient={setErrorsClient}
-                                validateClient={validateClient}
-                                errorsClient={errorsClient}
-                                catchErrorsClient={catchErrorsClient}
-                                setCatchErrorsClient={setCatchErrorsClient}
-                            />
+                            {/* <Autosuggest 
+                                suggestions={mis_Clientes}
+                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                getSuggestionValue={getSuggestionValue}
+                                renderSuggestion={renderSuggestion}
+                                inputProps={inputProps}
+                                onSuggestionSelected={eventEnter}
+                            /> */}
+                            
+                            <Row>
+                                <Col>
+                                <Autocomplete
+                                    size="medium"
+                                    id="clear-on-escape"
+                                    clearOnEscape
+                                    options={clientes.map((option, id) => `${id+1} - ${option.surname}, ${option.name}`)}
+                                    onChange={(e) => {seleccionarCliente(e)}}
+                                    value={(client.name && client.surname) ? 
+                                            `${client.surname}, ${client.name}`    
+                                        :''
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField {...params}  variant="standard" />
+                                    )}
+                                />
+                                </Col>
+                                <Col xs lg="1">
+                                    <Button size='sm' className='me' variant="primary" onClick={() => {handleShowCreateClient()}}>
+                                        ...
+                                    </Button>
+                                </Col>        
+                            </Row>
+                    
+                            <Modal show={showCreateClient} onHide={handleCloseCreateClient}>
+                                <Modal.Header closeButton>Agregar cliente</Modal.Header>
+                                <Modal.Body>
+                                <ClientInfo 
+                                    client={client}
+                                    setClient={setClient}
+                                    setErrorsClient={setErrorsClient}
+                                    validateClient={validateClient}
+                                    errorsClient={errorsClient}
+                                    catchErrorsClient={catchErrorsClient}
+                                    setCatchErrorsClient={setCatchErrorsClient}
+                                />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" type="button" onClick={handleCloseCreateClient}>
+                                        Cancelar
+                                    </Button>
+                                    <Button variant="primary" type="submit" onClick={handleSubmitCreateClient}>
+                                        Guardar cambios
+                                    </Button>
+                                </Modal.Footer>
+
+                            </Modal>
+                            
                         </div>
                         <hr />
 
