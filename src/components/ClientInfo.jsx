@@ -79,10 +79,7 @@ export function ClientInfo({client, setClient, setErrorsClient, validateClient, 
                 </Col>
             </Row>
             
-            <Accordion>
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Mas datos del cliente</Accordion.Header>
-                    <Accordion.Body>
+            <p>Mas datos del cliente</p>
                         <Row className="mb-3">
                             <Form.Group as={Col}>
                                 <FloatingLabel label='Cuit/DNI del cliente'>
@@ -171,9 +168,7 @@ export function ClientInfo({client, setClient, setErrorsClient, validateClient, 
                                 <></>}
                         </Form.Group>
                         
-                </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+                
             
 
             
