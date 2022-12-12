@@ -15,6 +15,10 @@ export const EDIT_CLIENT = 'EDIT_CLIENT'
 export const GET_BUDGETS_BY_CLIENT = 'GET_BUDGETS_BY_CLIENT'
 export const EDIT_ARTICLE = 'EDIT_ARTICLE'
 export const DELETE_ARTICLE = 'DELETE_ARTICLE'
+export const ADD_ARTICLE_ON_QUEUE = 'ADD_ARTICLE_ON_QUEUE'
+export const DELETE_BUDGET = 'DELETE_BUDGET'
+export const APPROVE_BUDGET = 'APPROVE_BUDGET'
+export const UNAPPROVE_BUDGET = 'UNAPPROVE_BUDGET'
 
 //Productos
 
@@ -64,6 +68,15 @@ export function delete_article(id){
                 type: DELETE_ARTICLE,
                 payload: id
             })
+        })
+    }
+}
+
+export function add_articles_on_queue(article){
+    return function(dispatch){
+        dispatch({
+            type: ADD_ARTICLE_ON_QUEUE,
+            payload: article
         })
     }
 }
@@ -159,6 +172,43 @@ export function get_budgets_by_client(id){
             dispatch({
                 type: GET_BUDGETS_BY_CLIENT,
                 payload: data
+            })
+        })
+    }
+}
+
+export function delete_budget(id){
+    return function(dispatch){
+        return axios.delete(`budgets/delete_budget/${id}`)
+        .then(data => {
+            
+            dispatch({
+                type: DELETE_BUDGET,
+                payload: id
+            })
+        })
+    }
+}
+
+export function approve_budget(id){
+    return function(dispatch){
+        return axios.put(`budgets/approve_budget/${id}`)
+        .then(() => {
+            dispatch({
+                type: APPROVE_BUDGET,
+                payload: id
+            })
+        })
+    }
+}
+
+export function unapprove_budget(id){
+    return function(dispatch){
+        return axios.put(`budgets/unapprove_budget/${id}`)
+        .then(() => {
+            dispatch({
+                type: UNAPPROVE_BUDGET,
+                payload: id
             })
         })
     }

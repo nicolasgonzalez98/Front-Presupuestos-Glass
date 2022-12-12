@@ -137,7 +137,7 @@ function BudgetPDF({number_budget, articles, client, iva}){
     let total = 0
 
     for(let i = 0; i < articles.length; i++){
-      console.log(articles[i].weight)
+      
       total += parseFloat(articles[i].weight)*parseInt(articles[i].quantity)
     }
 
@@ -170,7 +170,7 @@ function BudgetPDF({number_budget, articles, client, iva}){
   let sup_total = superficie()
 
   let peso_total = total_weight()
-  console.log(peso_total)
+  
 
   let subtotal = subprice()
   

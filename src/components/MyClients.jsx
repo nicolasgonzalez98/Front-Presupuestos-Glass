@@ -60,10 +60,12 @@ export function MyClients(){
         setShowEdit(false)
         setEditClient({})
         setErrorsClient({})
+        setCatchErrorsClient(false)
     }
     function handleShow(client){
         setEditClient(client)
         setShowEdit(true)
+        setCatchErrorsClient(false)
     }
 
     const [catchErrorsClient, setCatchErrorsClient] = useState(false)
@@ -190,12 +192,12 @@ export function MyClients(){
                                     onChange={handleChange}
                                     className='form-control'
                                 />
-                                {/* {catchErrorsClient ? (errorsClient.name ? 
+                                {catchErrorsClient ? (errorsClient.name ? 
                                         <Form.Control.Feedback type="invalid">
                                             {errorsClient.name}
                                         </Form.Control.Feedback> : 
                                         false) : 
-                                <></>} */}
+                                <></>}
                             </Form.Group>
                         </Col>
                         <Col>
@@ -210,12 +212,12 @@ export function MyClients(){
                                     onChange={handleChange}
                                     className='form-control'
                                 />
-                                {/* {catchErrorsClient ? (errorsClient.surname ? 
+                                {catchErrorsClient ? (errorsClient.surname ? 
                                         <Form.Control.Feedback type="invalid">
                                             {errorsClient.surname}
                                         </Form.Control.Feedback> : 
                                         false) : 
-                                <></>} */}
+                                <></>}
                             </Form.Group>
                         </Col>
                     </Row>

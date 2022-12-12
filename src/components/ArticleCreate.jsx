@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import { capitalizeFirstLetter } from "../utilities";
 
 export function ArticleCreate(){
 
@@ -31,15 +32,34 @@ export function ArticleCreate(){
         userId: localStorage.getItem('id_user')
     })
 
+    const [errors, setErrors] = useState({})
+    const [catchErrors, setCatchErrors] = useState(false)
+
+    function validateArticle(input){
+        let errors = {}
+
+        if(!input.name){
+            errors.name = 'No ingresaste el nombre del articulo'
+        }
+
+        return errors
+    }
+
     function handleChange(e){
         setArticle({
             ...article,
             [e.target.name]:e.target.value
         })
+
+        setErrors(validateArticle({
+            ...article,
+            [e.target.name]:e.target.value
+        }))
     }
 
+    
+
     function handleType(e){
-        console.log(e.target.value)
         setArticle({
             ...article,
             type:e.target.value,
@@ -54,13 +74,43 @@ export function ArticleCreate(){
         })
     }
 
+    function validar_precio(){
+        if(article.type === 'quantity' && article.unity_price){
+            return true
+        }else if(article.type === 'bulk' && article.area_price){
+            return true
+        }else if(article.type === 'weight' && article.weight_price){
+            return true
+        }else{
+            return false
+        }
+    }
+
     function handleSubmit(e){
         e.preventDefault()
-        if(!article.name){
-            console.log('No ingresaste el nombre!')
+        if(!article.name || !validar_precio()){
+           
+            if(!validar_precio()){
+                setErrors({
+                    ...errors,
+                    price:'No ingresaste precio.'
+                })
+            }else{
+                setErrors({
+                    ...errors,
+                    price:''
+                })
+            }
+            setCatchErrors(true)
         }else{
+            setCatchErrors(false)
+            setErrors({
+                ...errors,
+                price:''
+            })
             setArticle({
                 ...article,
+                name: capitalizeFirstLetter(article.name),
                 area_price: article.type !== 'bulk' ? 0 : parseInt(article.area_price),
                 weight_price: article.type !== 'weight' ? 0 : parseInt(article.weight_price),
                 unity_price: article.type !== 'quantity' ? 0 : parseInt(article.unity_price)
@@ -72,12 +122,8 @@ export function ArticleCreate(){
             })
             .catch(err => {
                 console.log('No se subio nada')
-                console.log(err)
             })
         }
-
-
-
     }
 
     return (
@@ -93,7 +139,9 @@ export function ArticleCreate(){
                         value={article.name}
                         onChange={handleChange}
                         className='form-control'
+                        isInvalid={catchErrors && errors.name}
                     />
+                    {(catchErrors && errors.name) && <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>}
                 </Form.Group>
 
                 <Form.Select onChange={handleType} className="mb-3">
@@ -108,14 +156,18 @@ export function ArticleCreate(){
                     <>
                         <Form.Group as={Col}>
                             <Form.Label>Precio por dimension:</Form.Label>
-                            <input
+                            <Form.Control
                                 type='text'
                                 name='area_price'
                                 placeholder='Precio por dimension' 
                                 value={article.area_price}
                                 onChange={handleChange}
                                 className='form-control'
+                                isInvalid={catchErrors && errors.price}
                             />
+                            {
+                                (catchErrors && errors.price) && <Form.Control.Feedback>No ingresaste precio.</Form.Control.Feedback>
+                            }
                         </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Unidad:</Form.Label>
@@ -130,14 +182,18 @@ export function ArticleCreate(){
                     <>
                         <Form.Group as={Col}>
                             <Form.Label>Precio por peso:</Form.Label>
-                            <input
+                            <Form.Control
                                 type='text'
                                 name='weight_price'
                                 placeholder='Precio por peso' 
                                 value={article.weight_price}
                                 onChange={handleChange}
                                 className='form-control'
+                                isInvalid={catchErrors && errors.price}
                             />
+                            {
+                                (catchErrors && errors.price) && <Form.Control.Feedback>No ingresaste precio.</Form.Control.Feedback>
+                            }
                         </Form.Group>
                             <Form.Group as={Col}>
                             <Form.Label>Unidad:</Form.Label>
@@ -153,14 +209,18 @@ export function ArticleCreate(){
                     <>
                         <Form.Group as={Col}>
                             <Form.Label>Precio por unidad:</Form.Label>
-                            <input
+                            <Form.Control
                                 type='text'
                                 name='unity_price'
                                 placeholder='Precio por unidad' 
                                 value={article.unity_price}
                                 onChange={handleChange}
                                 className='form-control'
+                                isInvalid={catchErrors && errors.price}
                             />
+                            {
+                                (catchErrors && errors.price) && <Form.Control.Feedback>No ingresaste precio.</Form.Control.Feedback>
+                            }
                         </Form.Group>
                         
                         <Form.Group as={Col}>

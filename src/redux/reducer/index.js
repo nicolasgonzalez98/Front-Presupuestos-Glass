@@ -1,11 +1,13 @@
-import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, DELETE_ARTICLE, DELETE_CLIENT, EDIT_ARTICLE, EDIT_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_CLIENT, GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST } from "../actions";
+import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, DELETE_ARTICLE, DELETE_CLIENT, EDIT_ARTICLE, EDIT_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_CLIENT, 
+    GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST, ADD_ARTICLE_ON_QUEUE, DELETE_BUDGET, APPROVE_BUDGET, UNAPPROVE_BUDGET } from "../actions";
 
 const initialState = {
     articles: [],
     my_articles: [],
     clients: [],
     budgets: [],
-    budgets_client: []
+    budgets_client: [],
+    articles_queue: []
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -33,7 +35,7 @@ const rootReducer = (state = initialState, action) => {
             
             let nuevo= state.my_articles.filter( e => e.id !== article_editted.id)
             nuevo = nuevo.concat(article_editted).sort((a,b) => a.id - b.id)
-            console.log(nuevo)
+            
             return {
                 ...state,
                 my_articles: nuevo
@@ -43,6 +45,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 my_articles: state.my_articles.filter(e => e.id !== action.payload),
                 
+            }
+        case ADD_ARTICLE_ON_QUEUE:
+            state.articles_queue.push(action.payload);
+            return {
+                ...state,
             }
         ///////////////////////
         //CLIENTES
@@ -68,10 +75,10 @@ const rootReducer = (state = initialState, action) => {
                     state.clients.splice(i, 1, elemento)
                 }
             }
-            
+            console.log(state.clients)
             return {
                 ...state,
-                clients: state.clients
+                clients: [...state.clients]
             }
         ///////////////////////
         //PRESUPUESTOS
@@ -88,6 +95,27 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 budgets_client: action.payload.data
+            }
+
+        case DELETE_BUDGET:
+            
+            return {
+                ...state,
+                budgets: state.budgets.filter(e => e.id !== action.payload)
+            }
+        case APPROVE_BUDGET:
+            let approve_budget = state.budgets.find(e => e.id === action.payload)
+            approve_budget.is_approved = true
+            return {
+                ...state,
+                budgets: [...state.budgets]
+            }
+        case UNAPPROVE_BUDGET:
+            let unapprove_budget = state.budgets.find(e => e.id === action.payload)
+            unapprove_budget.is_approved = false
+            return {
+                ...state,
+                budgets: [...state.budgets]
             }
         default:
             return state

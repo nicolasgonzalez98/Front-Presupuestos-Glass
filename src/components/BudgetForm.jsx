@@ -25,6 +25,7 @@ import Col from "react-bootstrap/Col";
 
 export function BudgetForm(){
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const user_id = localStorage.getItem('id_user')
@@ -37,13 +38,14 @@ export function BudgetForm(){
 
 
 
-    }, [])
+    }, [navigate, dispatch])
 
     
-    const navigate = useNavigate()
+    
 
     const articulos = useSelector(state => state.articles)
     const clientes = useSelector(state => state.clients)
+    const articulos_en_cola = useSelector(state => state.articles_queue)
     //ERRORES
     const [catchErrors, setCatchErrors] = useState(false)
     const [catchErrorsClient, setCatchErrorsClient] = useState(false)
@@ -120,25 +122,6 @@ export function BudgetForm(){
         
     }
 
-    // const onChange = (e, {newValue}) => {
-    //     setValorCliente(newValue)
-    // }
-
-    // const inputProps = {
-    //     placeholder:"Nombre o apellido del cliente",
-    //     value: valorCliente,
-    //     onChange
-        
-    // }
-
-    // const eventEnter= (e) => {
-    //     if(e.key === 'Enter'){
-    //         var split = e.target.value.split()
-    //     }
-    // }
-
-    
-
     function validateClient(input){
         let errors = {}
 
@@ -204,6 +187,7 @@ export function BudgetForm(){
 
     function handleSubmit(e){
         e.preventDefault()
+        
         if (Object.keys(errors).length === 0 && Object.keys(errorsClient).length === 0
             && client.name && input.number_budget
         ){  
@@ -213,12 +197,12 @@ export function BudgetForm(){
             input.client = client
             setFinished(!finished)
         }else{
+            
             if(Object.keys(errors).length > 0){
                 setCatchErrors(true)
             }
 
             if(Object.keys(errorsClient).length > 0){
-                
                 setCatchErrorsClient(true)
             }
             
@@ -238,22 +222,23 @@ export function BudgetForm(){
         
     
 
-    function confirmBudget(client){
+    async function confirmBudget(client){
         if(client.id){
-            input.clientId = client.id
-            dispatch(create_budget(input))
+            axios.post('articles/add_many_articles', articulos_en_cola)
+            .then(res => {
+                input.clientId = client.id
+                dispatch(create_budget(input))
+            })
+            
         }else{
+            await axios.post('articles/add_many_articles', articulos_en_cola)
             axios.post('clients/add_client', client)
             .then(res => {
+
                 input.clientId = res.data.id
                 dispatch(create_budget(input))
             })
         }
-
-        
-        
-        
-    
     }
 
     return (

@@ -40,6 +40,18 @@ export function MyArticles(){
         if(articulo.type === 'weight')return `$${articulo.weight_price} p/${articulo.unity}`
     }
 
+    function validar_precio(){
+        if(editArticle.type === 'quantity' && editArticle.unity_price){
+            return true
+        }else if(editArticle.type === 'bulk' && editArticle.area_price){
+            return true
+        }else if(editArticle.type === 'weight' && editArticle.weight_price){
+            return true
+        }else{
+            return false
+        }
+    }
+
     //Editar
     const [showEdit, setShowEdit] = useState(false);
     const [editArticle, setEditArticle] = useState({});
@@ -47,18 +59,17 @@ export function MyArticles(){
 
     function handleClose(){
         setShowEdit(false)
+        setErrorArticle(false)
         setEditArticle({})
         setErrorsArticle({})
     }
 
     function handleShow(article){
+        setErrorArticle(false)
         setEditArticle(article)
         setShowEdit(true)
     }
 
-    function validateArticle(input){
-
-    }
 
     function handleChange(e){
 
@@ -69,7 +80,6 @@ export function MyArticles(){
     }
 
     function handleType(e){
-        console.log(e.target.value)
         setEditArticle({
             ...editArticle,
             type:e.target.value,
@@ -85,28 +95,38 @@ export function MyArticles(){
     }
 
     function handleSubmit(){
-        Swal.fire({
-            title: 'Deseas guardar los cambios?',
-            showCancelButton: true,
-            confirmButtonText: 'Guardar',
-            cancelButtonText: 'Cancelar'
-        })
-        .then((result) => {
-            if (result.isConfirmed) {
-                setEditArticle({
-                    ...editArticle,
-                    area_price: editArticle.type !== 'bulk' ? 0 : parseInt(editArticle.area_price),
-                    weight_price: editArticle.type !== 'weight' ? 0 : parseInt(editArticle.weight_price),
-                    unity_price: editArticle.type !== 'quantity' ? 0 : parseInt(editArticle.unity_price)
-                })
-                dispatch(edit_article(editArticle.id,editArticle))
-                .then(setEditArticle({}))
-                .then(Swal.fire('Articulo editado correctamente!', '', 'success'))
-
-                setShowEdit(false)
-            }
-        })
+        if(validar_precio()){
+            setErrorArticle(false)
+            Swal.fire({
+                title: 'Deseas guardar los cambios?',
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar'
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    setEditArticle({
+                        ...editArticle,
+                        area_price: editArticle.type !== 'bulk' ? 0 : parseInt(editArticle.area_price),
+                        weight_price: editArticle.type !== 'weight' ? 0 : parseInt(editArticle.weight_price),
+                        unity_price: editArticle.type !== 'quantity' ? 0 : parseInt(editArticle.unity_price)
+                    })
+                    dispatch(edit_article(editArticle.id,editArticle))
+                    .then(setEditArticle({}))
+                    .then(Swal.fire('Articulo editado correctamente!', '', 'success'))
+    
+                    setShowEdit(false)
+                }
+            })
+        }else{
+            setErrorArticle(true)
+        }
+        
     }
+
+    //Errores editar
+
+    const [errorArticle, setErrorArticle] = useState(false)
     
     //Eliminar
     function handleDelete(articulo){
@@ -120,12 +140,14 @@ export function MyArticles(){
             if (result.isConfirmed) {
                 dispatch(delete_article(articulo.id))
                 .then(Swal.fire('Articulo eliminado correctamente!', '', 'success'))
+                
             }
         })
+        
     }
 
     return (
-        <div className="col-md-5 mx-auto mt-5 container">
+        <div className="col-md-5 mx-auto mt-5 container mb-3">
             {
                 my_articles.length > 0 ?
                 <>
@@ -186,14 +208,19 @@ export function MyArticles(){
                         <>
                             <Form.Group as={Col}>
                                 <Form.Label>Precio por dimension:</Form.Label>
-                                <input
+                                <Form.Control 
                                     type='text'
                                     name='area_price'
                                     placeholder='Precio por dimension' 
                                     value={editArticle.area_price}
                                     onChange={handleChange}
                                     className='form-control'
+                                    isInvalid={errorArticle}
                                 />
+                                {errorArticle &&
+                                <Form.Control.Feedback type="invalid">
+                                    Falta ingresar el precio
+                                </Form.Control.Feedback> }
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Unidad:</Form.Label>
@@ -208,14 +235,19 @@ export function MyArticles(){
                         <>
                             <Form.Group as={Col}>
                                 <Form.Label>Precio por peso:</Form.Label>
-                                <input
+                                <Form.Control 
                                     type='text'
                                     name='weight_price'
                                     placeholder='Precio por peso' 
                                     value={editArticle.weight_price}
                                     onChange={handleChange}
                                     className='form-control'
+                                    isInvalid={errorArticle}
                                 />
+                                {errorArticle &&
+                                <Form.Control.Feedback type="invalid">
+                                    Falta ingresar el precio
+                                </Form.Control.Feedback> }
                             </Form.Group>
                                 <Form.Group as={Col}>
                                 <Form.Label>Unidad:</Form.Label>
@@ -231,14 +263,19 @@ export function MyArticles(){
                         <>
                             <Form.Group as={Col}>
                                 <Form.Label>Precio por unidad:</Form.Label>
-                                <input
+                                <Form.Control 
                                     type='text'
                                     name='unity_price'
                                     placeholder='Precio por unidad' 
                                     value={editArticle.unity_price}
                                     onChange={handleChange}
                                     className='form-control'
+                                    isInvalid={errorArticle}
                                 />
+                                {errorArticle &&
+                                <Form.Control.Feedback type="invalid">
+                                    Falta ingresar el precio
+                                </Form.Control.Feedback> }
                             </Form.Group>
                             
                             <Form.Group as={Col}>
@@ -249,7 +286,6 @@ export function MyArticles(){
                             </Form.Group>
                         </>
                         }
-                        
                         
                     </Row>
                     </Form>
