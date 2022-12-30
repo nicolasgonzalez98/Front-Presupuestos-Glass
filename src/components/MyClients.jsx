@@ -12,6 +12,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row'
 import Col from "react-bootstrap/Col";
+import { FilterClients } from "./FilterClients";
 
 
 
@@ -31,7 +32,10 @@ export function MyClients(){
     },[dispatch, navigate])
 
 
-    let my_clientes = useSelector(state => state.clients)
+    let my_clientes = useSelector(state => state.filtered_clients)
+
+    const [order, setOrder] = useState('asc')
+    const [typeOrder, setTypeOrder] = useState('alph')
 
     function handleDelete(id, name, surname){
         Swal.fire({
@@ -148,6 +152,12 @@ export function MyClients(){
 
     return (
         <div className="col-md-5 mx-auto mt-5 container">
+            <FilterClients 
+                order = {order}
+                setOrder={setOrder}
+                typeOrder = {typeOrder}
+                setTypeOrder = {setTypeOrder}
+            />
             {
                 my_clientes.length > 0 ?
                 <>
@@ -232,12 +242,12 @@ export function MyClients(){
                                             value={editClient.dni}
                                             onChange={handleChange}
                                         />
-                                        {/* {catchErrorsClient ? (errorsClient.dni ? 
+                                        {catchErrorsClient ? (errorsClient.dni ? 
                                             <Form.Control.Feedback type="invalid">
                                                 {errorsClient.dni}
                                             </Form.Control.Feedback> : 
                                             false) : 
-                                        <></>} */}
+                                        <></>}
                                     
                                 </Form.Group>
                                 <Form.Group as={Col}>
@@ -286,12 +296,12 @@ export function MyClients(){
                                     value={editClient.description}
                                     onChange={handleChange}
                                 />
-                                {/* {catchErrorsClient ? (errorsClient.description ? 
+                                {catchErrorsClient ? (errorsClient.description ? 
                                             <Form.Control.Feedback type="invalid">
                                                 {errorsClient.description}
                                             </Form.Control.Feedback> : 
                                             false) : 
-                                <></>} */}
+                                <></>}
                             </Form.Group>
                 </Form>
             </Modal.Body>

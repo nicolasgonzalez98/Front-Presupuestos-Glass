@@ -12,6 +12,8 @@ import Form from "react-bootstrap/Form"
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Swal from 'sweetalert2'
+import { FilterArticles } from "./FilterArticles";
+import { what_is_the_price } from "../utilities";
 
 export function MyArticles(){
     const dispatch = useDispatch()
@@ -30,15 +32,14 @@ export function MyArticles(){
     
     
 
-    const my_articles = useSelector(state => state.my_articles)
+    const my_articles = useSelector(state => state.filtered_articles)
 
-    function what_is_the_price(articulo){
-        if(articulo.type === 'quantity')return `$${articulo.unity_price} p/${articulo.unity}`
+    //Filtros
+    const [order, setOrder] = useState('asc')
+    const [typeOrder, setTypeOrder] = useState('alph')
 
-        if(articulo.type === 'bulk')return `$${articulo.area_price} p/${articulo.unity}`
-
-        if(articulo.type === 'weight')return `$${articulo.weight_price} p/${articulo.unity}`
-    }
+    //
+    
 
     function validar_precio(){
         if(editArticle.type === 'quantity' && editArticle.unity_price){
@@ -148,6 +149,12 @@ export function MyArticles(){
 
     return (
         <div className="col-md-5 mx-auto mt-5 container mb-3">
+            <FilterArticles 
+                order = {order}
+                setOrder={setOrder}
+                typeOrder = {typeOrder}
+                setTypeOrder = {setTypeOrder}
+            />
             {
                 my_articles.length > 0 ?
                 <>

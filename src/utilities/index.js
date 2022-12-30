@@ -20,3 +20,32 @@ export function formatDate(date){
     return [day, month, year].join('-');
 }
 
+export function what_is_the_price(articulo){
+    if(articulo.type === 'quantity')return `$${articulo.unity_price} p/${articulo.unity}`
+
+    if(articulo.type === 'bulk')return `$${articulo.area_price} p/${articulo.unity}`
+
+    if(articulo.type === 'weight')return `$${articulo.weight_price} p/${articulo.unity}`
+}
+
+export function what_number_price(articulo){
+    if(articulo.type === 'quantity')return articulo.unity_price
+
+    if(articulo.type === 'bulk')return articulo.area_price
+
+    if(articulo.type === 'weight')return articulo.weight_price
+}
+
+export function monto_total(presupuesto){
+    let monto = 0
+    let articulos = presupuesto.list_budget
+    articulos.map(e => 
+        
+         monto += parseInt(e.budgetArticle.price)*parseInt(e.budgetArticle.quantity)
+    )
+
+    if(presupuesto.iva === 21)return monto*1.21
+    if(presupuesto.iva === 10.5)return monto*1.105
+
+    return monto
+}

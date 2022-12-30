@@ -1,0 +1,11 @@
+.budgets {
+    color: white;
+    text-decoration: none;
+}
+
+.budgets:hover{
+    color: white;
+    cursor: pointer;
+}
+
+

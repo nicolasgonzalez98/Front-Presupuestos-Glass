@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 //Bootstrap
+import '../styles/budgets.css'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { create_budget, get_clients_by_user } from "../redux/actions";
@@ -15,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formatDate } from "../utilities";
 import Modal from "react-bootstrap/Modal";
-//import Autosuggest from 'react-autosuggest';
+
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Row from "react-bootstrap/Row";
@@ -242,7 +243,7 @@ export function BudgetForm(){
     }
 
     return (
-        <div gap={2} className="col-md-5 mx-auto mt-3 container mb-3">
+        <div gap={2} className="col-md-5 mx-auto mt-3 container mb-3 ">
             {
                 !finished ?
                 <>
@@ -355,8 +356,34 @@ export function BudgetForm(){
                     </Form>
                 </> : 
                 <>  
-                <div className="col-md-5 mx-auto mt-5 container">
+                <div >
                     <h4>Vista previa</h4>
+                    <Row>
+                        <Col xs='auto'>
+                            <Button variant="success" >
+                            <PDFDownloadLink 
+                                className="budgets"
+                                document={
+                                <BudgetPDF
+                                    
+                                    number_budget={input.number_budget}
+                                    articles={input.articles}
+                                    client={client}
+                                    iva={input.iva}
+                                />
+                            }
+                                onClick={() => confirmBudget(client)}
+                            >
+                                Descargar PDF
+                            </PDFDownloadLink>
+                        </Button>
+                        </Col>
+                        <Col xs='auto'>
+                            <Button variant="primary" type="button" onClick={() => setFinished(!finished)}>Editar presupuesto</Button>
+                        </Col>
+                    </Row>
+                    
+                    
                     <PDFViewer width={'500px'} height={'500px'} position={'center'} className='mt-3 '>
                         <BudgetPDF
                             number_budget={input.number_budget}
@@ -366,20 +393,7 @@ export function BudgetForm(){
                             
                         />
                     </PDFViewer>
-                    <PDFDownloadLink 
-                        document={
-                        <BudgetPDF
-                            number_budget={input.number_budget}
-                            articles={input.articles}
-                            client={client}
-                            iva={input.iva}
-                        />
-                    }
-                        onClick={() => confirmBudget(client)}
-                    >
-                        Descargar PDF
-                    </PDFDownloadLink>
-                    <Button variant="primary" type="button" onClick={() => setFinished(!finished)}>Editar presupuesto</Button>
+                    
                 </div>
                 </>
             }

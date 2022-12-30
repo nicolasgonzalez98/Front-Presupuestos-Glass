@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { approve_budget, delete_budget, get_budgets_by_user, unapprove_budget } from "../redux/actions";
 import {useSelector} from 'react-redux'
-
 //PDF
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import BudgetPDF from "./BudgetPDF";
@@ -11,8 +10,12 @@ import BudgetPDF from "./BudgetPDF";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { formatDate } from "../utilities";
+import { formatDate, monto_total } from "../utilities";
+import '../styles/budgets.css'
+import Col from 'react-bootstrap/Col';
 
+import Row from 'react-bootstrap/Row';
+import { FilterBudgets } from "./FilterBudgets";
 
 export function MyBudgets(){
 
@@ -30,7 +33,10 @@ export function MyBudgets(){
 
     
 
-    const my_budgets = useSelector(state => state.budgets)
+    const my_budgets = useSelector(state => state.filtered_budgets)
+
+    const [order, setOrder] = useState('desc')
+    const [typeOrder, setTypeOrder] = useState('date')
 
     function ordenar_articulos(articulos){
         let total = []
@@ -50,13 +56,7 @@ export function MyBudgets(){
         return total
     }
 
-    function monto_total(articulos){
-        let monto = 0
-
-        articulos.map(e => monto += (e.type === 'quantity' ? parseInt(e.budgetArticle.price)*parseInt(e.budgetArticle.quantity) : parseInt(e.budgetArticle.price)))
-
-        return monto
-    }
+    
 
     function eliminar_presupuesto(id){
         dispatch(delete_budget(id))
@@ -73,6 +73,14 @@ export function MyBudgets(){
 
     return (
         <div gap={2} className="col-md-5 mx-auto mt-5 container">
+
+            <FilterBudgets 
+                order={order}
+                setOrder={setOrder}
+                typeOrder={typeOrder}
+                setTypeOrder={setTypeOrder}
+            />
+
             {my_budgets?.map(e => 
             
             <>
@@ -88,12 +96,14 @@ export function MyBudgets(){
                         </ListGroup>
                         
                         <Card.Text>Monto total: </Card.Text>
-                        <Card.Subtitle>{`$${monto_total(e.list_budget)}`}</Card.Subtitle>   
+                        <Card.Subtitle>{`$${monto_total(e)}`}</Card.Subtitle>   
                     </Card.Body>
-                    <Card.Footer className="d-flex justify-content-between align-items-start">
-
-                        <Button style={{textDecoration: 'none'}}>
+                    <Card.Footer className="align-items-center">
+                    <Row>
+                    <Col xs='auto'>         
+                        <Button variant="success" className="budgets">
                             <PDFDownloadLink 
+                                className="budgets"
                                 document={
                                 <BudgetPDF
                                     number_budget={e.number_budget}
@@ -101,21 +111,25 @@ export function MyBudgets(){
                                     client={e.client}
                                     iva={e.iva}
                                 />
+                                
                             }
                             >
                                 Descargar PDF
                             </PDFDownloadLink> 
                         </Button>
-                        
-
+                    </Col>
+                    <Col xs='auto'>
                         {
                             e.is_approved ?
-                            <Button variant='danger' onClick={() => desaprobar_presupuesto(e.id)}>Desaprobar</Button>
+                            <Button variant='danger'  onClick={() => desaprobar_presupuesto(e.id)}>Desaprobar</Button>
                             :
-                            <Button variant='success' onClick={() => aprobar_presupuesto(e.id)}>Aprobar</Button>
+                            <Button variant='success'  onClick={() => aprobar_presupuesto(e.id)}>Aprobar</Button>
                         }
-
+                    </Col>
+                    <Col xs='auto'>
                         <Button variant='danger' onClick={() => eliminar_presupuesto(e.id)}>Eliminar</Button>
+                    </Col>
+                    </Row>
                     </Card.Footer>
                 </Card>
             </>)}

@@ -21,7 +21,7 @@ function NavGlassDoor() {
         })
         .then((res) => {
             if(res){
-                //console.log('removiendo store')
+                console.log('removiendo store')
                 localStorage.setItem('id_user', 0)
             }
             

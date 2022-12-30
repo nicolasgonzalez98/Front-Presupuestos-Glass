@@ -19,6 +19,11 @@ export const ADD_ARTICLE_ON_QUEUE = 'ADD_ARTICLE_ON_QUEUE'
 export const DELETE_BUDGET = 'DELETE_BUDGET'
 export const APPROVE_BUDGET = 'APPROVE_BUDGET'
 export const UNAPPROVE_BUDGET = 'UNAPPROVE_BUDGET'
+export const FILTER_CLIENTS_BY_NAME = 'FILTER_CLIENTS_BY_NAME'
+export const FILTER_CLIENTS_BY_TYPE = 'FILTER_CLIENTS_BY_TYPE'
+export const FILTER_ARTICLES_BY_TYPE = 'FILTER_ARTICLES_BY_TYPE'
+export const FILTER_ARTICLE_BY_NAME = 'FILTER_ARTICLE_BY_NAME'
+export const FILTER_BUDGETS_BY_TYPE = 'FILTER_BUDGETS_BY_TYPE'
 
 //Productos
 
@@ -81,6 +86,24 @@ export function add_articles_on_queue(article){
     }
 }
 
+export function filter_article_by_name(name){
+    return function(dispatch){
+        return dispatch({
+            type: FILTER_ARTICLE_BY_NAME,
+            payload: name
+        })
+    }
+}
+
+export function filter_by_type_articles(data){
+    return function(dispatch){
+        return dispatch({
+            type: FILTER_ARTICLES_BY_TYPE,
+            payload: data
+        })
+    }
+}
+
 //Clientes
 
 export function add_client(payload){
@@ -135,6 +158,24 @@ export function edit_client(id, info){
                 type: EDIT_CLIENT,
                 payload: data
             })
+        })
+    }
+}
+
+export function filter_clients_by_name(name){
+    return function(dispatch){
+        return dispatch({
+            type: FILTER_CLIENTS_BY_NAME,
+            payload: name
+        })
+    }
+}
+
+export function filter_by_type_clients(data){
+    return function(dispatch){
+        return dispatch({
+            type: FILTER_CLIENTS_BY_TYPE,
+            payload: data
         })
     }
 }
@@ -210,6 +251,15 @@ export function unapprove_budget(id){
                 type: UNAPPROVE_BUDGET,
                 payload: id
             })
+        })
+    }
+}
+
+export function filter_by_type_budgets(data){
+    return function(dispatch){
+        return dispatch({
+            type: FILTER_BUDGETS_BY_TYPE,
+            payload: data
         })
     }
 }
