@@ -20,10 +20,9 @@ function NavGlassDoor() {
             withCredentials: true
         })
         .then((res) => {
-            if(res){
-                console.log('removiendo store')
-                localStorage.setItem('id_user', 0)
-            }
+            console.log('cerrando sesion', res)
+            localStorage.setItem('id_user', 0)
+            
             
         })
     }

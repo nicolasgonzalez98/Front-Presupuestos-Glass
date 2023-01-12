@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { delete_client, edit_client, get_budgets_by_client, get_budgets_by_user, get_clients_by_user } from "../redux/actions";
+import { delete_client, edit_client, get_budgets_by_client, get_clients_by_user } from "../redux/actions";
 import {useSelector} from 'react-redux'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -12,9 +12,13 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row'
 import Col from "react-bootstrap/Col";
+import Card from 'react-bootstrap/Card';
 import { FilterClients } from "./FilterClients";
+import { formatDate, monto_total } from "../utilities";
 
-
+//PDF
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import BudgetPDF from "./BudgetPDF";
 
 export function MyClients(){
     const dispatch = useDispatch()
@@ -33,6 +37,7 @@ export function MyClients(){
 
 
     let my_clientes = useSelector(state => state.filtered_clients)
+    let budgets_client = useSelector(state => state.budgets_client)
 
     const [order, setOrder] = useState('asc')
     const [typeOrder, setTypeOrder] = useState('alph')
@@ -142,12 +147,29 @@ export function MyClients(){
 
     function handleShowBudgets(id){
         setShowPersonalBudgets(true)
-        console.log(id)
         dispatch(get_budgets_by_client(id))
     }
 
     function handleCloseBudgets(){
         setShowPersonalBudgets(false)
+    }
+
+    function ordenar_articulos(articulos){
+        let total = []
+        let resultado = {}
+        articulos?.map(e => {
+            resultado.name = e.name
+            resultado.quantity = e.budgetArticle.quantity
+            resultado.weight = e.budgetArticle.weight
+            resultado.width = e.budgetArticle.width
+            resultado.height = e.budgetArticle.height
+            resultado.price = e.budgetArticle.price
+            total.push(resultado)
+            resultado = {}
+        })
+        
+        
+        return total
     }
 
     return (
@@ -319,7 +341,34 @@ export function MyClients(){
                 <Modal.Title>Presuspuestos del usuario</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
+                {budgets_client.length ? 
+                budgets_client.map(e => 
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Card Title</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Creado el {formatDate(e.createdAt)}</Card.Subtitle>
+                            <Card.Text>Coste total: ${monto_total(e)}</Card.Text>
+                            <Button>
+                                <PDFDownloadLink 
+                                    className="budgets"
+                                    document={
+                                    <BudgetPDF
+                                        //number_budget={e.number_budget}
+                                        articles={ordenar_articulos(e.list_budget)}
+                                        client={e.client}
+                                        iva={e.iva}
+                                    />
+                                    
+                                }
+                                >
+                                    Descargar PDF
+                                </PDFDownloadLink> 
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                    )
+                : "El cliente por ahora no posee presupuestos"
+            }
             </Modal.Body>
         </Modal>
         </div>

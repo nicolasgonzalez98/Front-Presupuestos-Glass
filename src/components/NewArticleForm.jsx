@@ -12,6 +12,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Modal from "react-bootstrap/Modal";
 import { capitalizeFirstLetter } from "../utilities";
+import { useControlled } from "@mui/material";
 
 
 
@@ -165,7 +166,7 @@ export function NewArticleForm({articles}){
     }
 
     function seleccionarArticulo(e){
-
+        
         if(!e.target.outerText && !e.target.defaultValue){
             setNewProduct({
                 name: '',
@@ -188,9 +189,11 @@ export function NewArticleForm({articles}){
             })
         }
 
+        
+
 
         if(e.key !== 'Enter'){
-            console.log(e.target.outerText)
+            
             setNewProduct(todos_articulos[e.target.outerText.split(' ')[0]-1])
             
             
@@ -202,6 +205,7 @@ export function NewArticleForm({articles}){
            
             
         }else{
+            
             setTimeout(() => {
                 setNewProduct(todos_articulos[e.target.defaultValue.split(' ')[0]-1])
                 
@@ -336,7 +340,7 @@ export function NewArticleForm({articles}){
         }
     }
     
-
+    
 
     return (
         <div>
@@ -350,10 +354,12 @@ export function NewArticleForm({articles}){
                     clearOnEscape
                     options={todos_articulos.map((option, id) => `${id+1} - ${option.name} (${precioProducto(option)})`)}
                     onChange={(e) => {seleccionarArticulo(e)}}
-                    value={(newProduct.name && newProduct.type) ? 
+                    
+                    value={(newProduct.name !== '') ?
                             `${newProduct.name} - (${precioProducto(newProduct)})`    
-                        :''
+                            :''
                     }
+                    autoComplete={useControlled}
                     renderInput={(params) => (
                         <TextField {...params}  variant="standard" />
                     )}

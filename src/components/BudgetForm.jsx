@@ -11,7 +11,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import '../styles/budgets.css'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { create_budget, get_clients_by_user } from "../redux/actions";
+import { active_loader, create_budget, deactivate_loader, get_clients_by_user } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formatDate } from "../utilities";
@@ -21,6 +21,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useControlled } from "@mui/material";
 
 
 
@@ -29,6 +30,7 @@ export function BudgetForm(){
     const navigate = useNavigate()
 
     useEffect(() => {
+        dispatch(active_loader)
         const user_id = localStorage.getItem('id_user')
         
         if(user_id === null || user_id === '0'){
@@ -36,7 +38,7 @@ export function BudgetForm(){
         }else{
             dispatch(get_clients_by_user(user_id))
         }
-
+        dispatch(deactivate_loader)
 
 
     }, [navigate, dispatch])
@@ -290,10 +292,11 @@ export function BudgetForm(){
                                     clearOnEscape
                                     options={clientes.map((option, id) => `${id+1} - ${option.surname}, ${option.name}`)}
                                     onChange={(e) => {seleccionarCliente(e)}}
-                                    value={(client.name && client.surname) ? 
-                                            `${client.surname}, ${client.name}`    
-                                        :''
-                                    }
+                                    // value={(client.name && client.surname) ? 
+                                    //         `${client.surname}, ${client.name}`    
+                                    //     :''
+                                    // }
+                                    autoComplete={useControlled}
                                     renderInput={(params) => (
                                         <TextField {...params}  variant="standard" />
                                     )}

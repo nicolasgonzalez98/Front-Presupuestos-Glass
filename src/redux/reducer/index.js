@@ -1,6 +1,6 @@
 import { monto_total, what_number_price } from "../../utilities";
 import { ADD_PRODUCT, CREATE_BUDGET, CREATE_CLIENT, DELETE_ARTICLE, DELETE_CLIENT, EDIT_ARTICLE, EDIT_CLIENT, GET_ARTICLES_BY_USER, GET_BUDGETS_BY_CLIENT, 
-    GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST, ADD_ARTICLE_ON_QUEUE, DELETE_BUDGET, APPROVE_BUDGET, UNAPPROVE_BUDGET, FILTER_CLIENTS_BY_NAME, FILTER_CLIENTS_BY_TYPE, FILTER_ARTICLES_BY_TYPE, FILTER_ARTICLE_BY_NAME, FILTER_BUDGETS_BY_TYPE } from "../actions";
+    GET_BUDGETS_BY_USER, GET_CLIENTS_BY_USER, REMOVE_ELEMENT_FROM_LIST, ADD_ARTICLE_ON_QUEUE, DELETE_BUDGET, APPROVE_BUDGET, UNAPPROVE_BUDGET, FILTER_CLIENTS_BY_NAME, FILTER_CLIENTS_BY_TYPE, FILTER_ARTICLES_BY_TYPE, FILTER_ARTICLE_BY_NAME, FILTER_BUDGETS_BY_TYPE, DISACTIVE_LOADER, ACTIVE_LOADER } from "../actions";
 
 function sortNameAsc(a, b){
     let x = a.surname + ' '+a.name
@@ -101,7 +101,8 @@ const initialState = {
     budgets: [],
     filtered_budgets: [],
     budgets_client: [],
-    articles_queue: []
+    articles_queue: [],
+    is_loading: false
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -257,12 +258,14 @@ const rootReducer = (state = initialState, action) => {
                 ...state
             }
         case GET_BUDGETS_BY_USER: 
+            
             return {
                 ...state,
                 budgets: (action.payload.data).sort(sortDateDesc),
                 filtered_budgets: (action.payload.data).sort(sortDateDesc)
             }
         case GET_BUDGETS_BY_CLIENT:
+            console.log(action.payload.data)
             return {
                 ...state,
                 budgets_client: action.payload.data
@@ -322,6 +325,18 @@ const rootReducer = (state = initialState, action) => {
                 budgets: bt,
                 filtered_budgets: bf
             }
+        ///LOADER
+        case ACTIVE_LOADER:
+            return {
+                ...state,
+                is_loading: true
+            }
+        case DISACTIVE_LOADER:{
+            return {
+                ...state,
+                is_loading: false
+            }
+        }
         default:
             return state
     }

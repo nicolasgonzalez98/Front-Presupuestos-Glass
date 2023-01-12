@@ -49,3 +49,21 @@ export function monto_total(presupuesto){
 
     return monto
 }
+
+export function ordenar_articulos(articulos){
+    let total = []
+    let resultado = {}
+    articulos?.map(e => {
+        resultado.name = e.name
+        resultado.quantity = e.budgetArticle.quantity
+        resultado.weight = e.budgetArticle.weight
+        resultado.width = e.budgetArticle.width
+        resultado.height = e.budgetArticle.height
+        resultado.price = e.budgetArticle.price
+        total.push(resultado)
+        resultado = {}
+    })
+    
+    
+    return total
+}

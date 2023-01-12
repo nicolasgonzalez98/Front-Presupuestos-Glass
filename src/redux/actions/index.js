@@ -24,7 +24,8 @@ export const FILTER_CLIENTS_BY_TYPE = 'FILTER_CLIENTS_BY_TYPE'
 export const FILTER_ARTICLES_BY_TYPE = 'FILTER_ARTICLES_BY_TYPE'
 export const FILTER_ARTICLE_BY_NAME = 'FILTER_ARTICLE_BY_NAME'
 export const FILTER_BUDGETS_BY_TYPE = 'FILTER_BUDGETS_BY_TYPE'
-
+export const ACTIVE_LOADER = 'ACTIVE_LOADER'
+export const DISACTIVE_LOADER = 'DISACTIVE_LOADER'
 //Productos
 
 export function add_product(payload){
@@ -260,6 +261,24 @@ export function filter_by_type_budgets(data){
         return dispatch({
             type: FILTER_BUDGETS_BY_TYPE,
             payload: data
+        })
+    }
+}
+
+//Loader
+
+export function active_loader(){
+    return function(dispatch){
+        return dispatch({
+            type: ACTIVE_LOADER
+        })
+    }
+}
+
+export function deactivate_loader(){
+    return function(dispatch){
+        return dispatch({
+            type: DISACTIVE_LOADER
         })
     }
 }

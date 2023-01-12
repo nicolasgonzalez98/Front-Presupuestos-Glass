@@ -4,12 +4,17 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import useLocalStorage from '../hooks/use-localstorage';
+import { useDispatch } from 'react-redux';
+import { active_loader, deactivate_loader } from '../redux/actions';
+
+
 
 export function LogIn(){
 
     
-
+    
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if(localStorage.getItem('id_user') !== '0'){
@@ -38,6 +43,7 @@ export function LogIn(){
         }else{
             setMsg('')
             
+            dispatch(active_loader())
             let is_authorized = await axios.get("/is_online");
 
             if (is_authorized.data) {
@@ -73,6 +79,7 @@ export function LogIn(){
                 
                 
             }
+            dispatch(deactivate_loader())
         }
     }
 
@@ -84,7 +91,9 @@ export function LogIn(){
     }
 
     return (
+        
         <div gap={2} className="col-md-5 mx-auto mt-5 container">
+            
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Usuario</Form.Label>

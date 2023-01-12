@@ -9,11 +9,21 @@ import ClientCreate from './components/ClientCreate';
 import MyArticles from './components/MyArticles';
 import MyClients from './components/MyClients';
 import MyBudgets from './components/MyBudgets';
+import LoadingOverlay from 'react-loading-overlay'
+import './index.css'
+import { useSelector } from 'react-redux';
 
 function App() {
 
+  const is_loading = useSelector(state => state.is_loading)
+
   return (
-    <div>
+    <LoadingOverlay
+            active={is_loading}
+            spinner
+            text='Cargando...'
+        >
+    <div className='app'>
       <NavGlassDoor />
       <BrowserRouter>
         <Routes>
@@ -32,6 +42,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </LoadingOverlay>
   );
 }
 
