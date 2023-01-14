@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { delete_client, edit_client, get_budgets_by_client, get_clients_by_user } from "../redux/actions";
+import { active_loader, deactivate_loader, delete_client, edit_client, get_budgets_by_client, get_clients_by_user } from "../redux/actions";
 import {useSelector} from 'react-redux'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -25,6 +25,7 @@ export function MyClients(){
     const navigate = useNavigate()
 
     useEffect(() => {
+        dispatch(active_loader())
         const user_id = localStorage.getItem('id_user')
         
         if(user_id === null || user_id === '0'){
@@ -32,7 +33,7 @@ export function MyClients(){
         }else{
             dispatch(get_clients_by_user(user_id))
         }
-        
+        dispatch(deactivate_loader())
     },[dispatch, navigate])
 
 
@@ -43,6 +44,7 @@ export function MyClients(){
     const [typeOrder, setTypeOrder] = useState('alph')
 
     function handleDelete(id, name, surname){
+        dispatch(active_loader())
         Swal.fire({
             title: `Deseas eliminar a ${name} ${surname}?`,
             showCancelButton: true,
@@ -55,6 +57,7 @@ export function MyClients(){
                 Swal.fire('Eliminado correctamente!', '', 'success')
             }
         })
+        dispatch(deactivate_loader())
     }
 
     
@@ -120,7 +123,7 @@ export function MyClients(){
     }
 
     function handleSubmit(){
-        
+        dispatch(active_loader())
         if(Object.keys(errorsClient).length === 0 && editClient.name){
             setCatchErrorsClient(false)
             dispatch(edit_client(editClient.id, editClient))
@@ -140,6 +143,7 @@ export function MyClients(){
         }else{
             setCatchErrorsClient(true)
         }
+        dispatch(deactivate_loader())
     }
     //
     //Mostrar sus presupuestos

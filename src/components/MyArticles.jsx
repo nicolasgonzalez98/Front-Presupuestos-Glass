@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { delete_article, edit_article, get_articles_by_user } from "../redux/actions";
+import { active_loader, deactivate_loader, delete_article, edit_article, get_articles_by_user } from "../redux/actions";
 import {useSelector} from 'react-redux'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from "react-bootstrap/Button";
@@ -19,6 +19,7 @@ export function MyArticles(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(() => {
+        dispatch(active_loader())
         const user_id = localStorage.getItem('id_user')
         console.log(user_id)
         if(user_id === null || user_id === '0'){
@@ -26,7 +27,7 @@ export function MyArticles(){
         }else{
             dispatch(get_articles_by_user(user_id))
         }
-        
+        dispatch(deactivate_loader())
     },[dispatch,navigate])
 
     

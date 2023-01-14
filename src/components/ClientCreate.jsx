@@ -22,7 +22,7 @@ export function ClientCreate(){
     
     useEffect(() => {
         let user_id = localStorage.getItem('id_user')
-        console.log(user_id)
+        
         if(user_id === null || user_id === '0'){
             navigate('/')
         }

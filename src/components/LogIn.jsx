@@ -17,6 +17,7 @@ export function LogIn(){
     const dispatch = useDispatch()
 
     useEffect(() => {
+        
         if(localStorage.getItem('id_user') !== '0'){
             navigate('/budget')
         }

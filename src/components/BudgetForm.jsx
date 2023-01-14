@@ -190,7 +190,7 @@ export function BudgetForm(){
 
     function handleSubmit(e){
         e.preventDefault()
-        
+        dispatch(active_loader())
         if (Object.keys(errors).length === 0 && Object.keys(errorsClient).length === 0
             && client.name && input.number_budget
         ){  
@@ -211,7 +211,7 @@ export function BudgetForm(){
             
             
         }
-        
+        dispatch(deactivate_loader())
         
     }
 
@@ -226,6 +226,7 @@ export function BudgetForm(){
     
 
     async function confirmBudget(client){
+        dispatch(active_loader())
         if(client.id){
             axios.post('articles/add_many_articles', articulos_en_cola)
             .then(res => {
@@ -242,6 +243,7 @@ export function BudgetForm(){
                 dispatch(create_budget(input))
             })
         }
+        dispatch(deactivate_loader())
     }
 
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { approve_budget, delete_budget, get_budgets_by_user, unapprove_budget } from "../redux/actions";
+import { active_loader, approve_budget, deactivate_loader, delete_budget, get_budgets_by_user, unapprove_budget } from "../redux/actions";
 import {useSelector} from 'react-redux'
 //PDF
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -23,12 +23,15 @@ export function MyBudgets(){
     const navigate = useNavigate()
 
     useEffect(() => {
+        dispatch(active_loader())
         const user_id = localStorage.getItem('id_user')
         if(user_id === null || user_id === '0'){
             navigate('/')
         }else{
             dispatch(get_budgets_by_user(user_id))
         }
+
+        dispatch(deactivate_loader())
     }, [dispatch, approve_budget, unapprove_budget])
 
     
