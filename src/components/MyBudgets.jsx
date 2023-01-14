@@ -16,6 +16,7 @@ import Col from 'react-bootstrap/Col';
 
 import Row from 'react-bootstrap/Row';
 import { FilterBudgets } from "./FilterBudgets";
+import Swal from 'sweetalert2'
 
 export function MyBudgets(){
 
@@ -62,7 +63,21 @@ export function MyBudgets(){
     
 
     function eliminar_presupuesto(id){
-        dispatch(delete_budget(id))
+        Swal.fire({
+            title: `Deseas eliminar el presupuesto?`,
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        })
+        .then((result) => {
+            if(result.isConfirmed){
+                dispatch(active_loader())
+                dispatch(delete_budget(id))
+                dispatch(deactivate_loader())
+                Swal.fire('Eliminado correctamente!', '', 'success')
+            }
+        })
+        
     }
     
     function aprobar_presupuesto(id){
