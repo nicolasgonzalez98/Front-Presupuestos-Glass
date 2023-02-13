@@ -44,7 +44,7 @@ export function MyClients(){
     const [typeOrder, setTypeOrder] = useState('alph')
 
     function handleDelete(id, name, surname){
-        dispatch(active_loader())
+        
         Swal.fire({
             title: `Deseas eliminar a ${name} ${surname}?`,
             showCancelButton: true,
@@ -53,11 +53,13 @@ export function MyClients(){
         })
         .then((result) => {
             if(result.isConfirmed){
+                dispatch(active_loader())
                 dispatch(delete_client(id))
+                dispatch(deactivate_loader())
                 Swal.fire('Eliminado correctamente!', '', 'success')
             }
         })
-        dispatch(deactivate_loader())
+        
     }
 
     
@@ -123,14 +125,15 @@ export function MyClients(){
     }
 
     function handleSubmit(){
-        dispatch(active_loader())
+        
         if(Object.keys(errorsClient).length === 0 && editClient.name){
             setCatchErrorsClient(false)
+            dispatch(active_loader())
             dispatch(edit_client(editClient.id, editClient))
             .then(
-                setEditClient({
-                })
+                setEditClient({})
             )
+            .then(dispatch(deactivate_loader()))
             .then(
                 Swal.fire(
                     'Cliente editado correctamente!',
@@ -143,7 +146,7 @@ export function MyClients(){
         }else{
             setCatchErrorsClient(true)
         }
-        dispatch(deactivate_loader())
+        
     }
     //
     //Mostrar sus presupuestos

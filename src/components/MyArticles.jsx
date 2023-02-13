@@ -21,7 +21,6 @@ export function MyArticles(){
     useEffect(() => {
         dispatch(active_loader())
         const user_id = localStorage.getItem('id_user')
-        console.log(user_id)
         if(user_id === null || user_id === '0'){
             navigate('/')
         }else{
@@ -106,6 +105,7 @@ export function MyArticles(){
                 cancelButtonText: 'Cancelar'
             })
             .then((result) => {
+                dispatch(active_loader())
                 if (result.isConfirmed) {
                     setEditArticle({
                         ...editArticle,
@@ -115,6 +115,7 @@ export function MyArticles(){
                     })
                     dispatch(edit_article(editArticle.id,editArticle))
                     .then(setEditArticle({}))
+                    .then(dispatch(deactivate_loader()))
                     .then(Swal.fire('Articulo editado correctamente!', '', 'success'))
     
                     setShowEdit(false)
@@ -139,8 +140,10 @@ export function MyArticles(){
             cancelButtonText: 'Cancelar'
         })
         .then((result) => {
+            dispatch(active_loader())
             if (result.isConfirmed) {
                 dispatch(delete_article(articulo.id))
+                dispatch(deactivate_loader())
                 .then(Swal.fire('Articulo eliminado correctamente!', '', 'success'))
                 
             }
