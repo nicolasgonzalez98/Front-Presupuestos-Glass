@@ -16,8 +16,8 @@ import { useControlled } from "@mui/material";
 
 
 
-export function NewArticleForm({articles}){
 
+export function NewArticleForm({articles}){
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -120,11 +120,8 @@ export function NewArticleForm({articles}){
     }
 
     function addProduct(){
-        
         let elemento_repetido = articles.find(e => e.name === capitalizeFirstLetter(product.name))
-        console.log(elemento_repetido)
         if (Object.keys(errors).length === 0 && product.name && !elemento_repetido) {
-            console.log('entro aca?')
             setCatchErrors(false)
             product.name = capitalizeFirstLetter(product.name)
             dispatch(add_product(product))
@@ -166,57 +163,63 @@ export function NewArticleForm({articles}){
     }
 
     function seleccionarArticulo(e){
+        console.log(e.target.value)
+        setNewProduct(todos_articulos[e.target.value])
+        setProduct({
+                    ...product,
+                    name: todos_articulos[e.target.value].name,
+                    price: precioProductoAIngresar(todos_articulos[e.target.value], product)
+                })
+        // if(!e.target.outerText && !e.target.defaultValue){
+        //     setNewProduct({
+        //         name: '',
+        //         weight_price: '',
+        //         area_price: '',
+        //         unity_price: '',
+        //         type: 'bulk',
+        //         unity: 'M2',
+        //         userId: localStorage.getItem('id_user')
+        //     })
+
+        //     setProduct({
+        //             name: '',
+        //             quantity: '',
+        //             weight: '',
+        //             width: '',
+        //             height: '',
+        //             price:'',
+        //             userId: localStorage.getItem('id_user')
+        //     })
+        // }
+
         
-        if(!e.target.outerText && !e.target.defaultValue){
-            setNewProduct({
-                name: '',
-                weight_price: '',
-                area_price: '',
-                unity_price: '',
-                type: 'bulk',
-                unity: 'M2',
-                userId: localStorage.getItem('id_user')
-            })
-
-            setProduct({
-                    name: '',
-                    quantity: '',
-                    weight: '',
-                    width: '',
-                    height: '',
-                    price:'',
-                    userId: localStorage.getItem('id_user')
-            })
-        }
-
-        
 
 
-        if(e.key !== 'Enter'){
+        // if(e.key !== 'Enter'){
             
-            setNewProduct(todos_articulos[e.target.outerText.split(' ')[0]-1])
+        //     setNewProduct(todos_articulos[e.target.outerText.split(' ')[0]-1])
             
             
-            setProduct({
-                ...product,
-                name: todos_articulos[e.target.outerText.split(' ')[0]-1].name,
-                price: precioProductoAIngresar(todos_articulos[e.target.outerText.split(' ')[0]-1], product)
-            })
+        //     setProduct({
+        //         ...product,
+        //         name: todos_articulos[e.target.outerText.split(' ')[0]-1].name,
+        //         price: precioProductoAIngresar(todos_articulos[e.target.outerText.split(' ')[0]-1], product)
+        //     })
            
             
-        }else{
+        // }else{
             
-            setTimeout(() => {
-                setNewProduct(todos_articulos[e.target.defaultValue.split(' ')[0]-1])
+        //     setTimeout(() => {
+        //         setNewProduct(todos_articulos[e.target.defaultValue.split(' ')[0]-1])
                 
-                setProduct({
-                    ...product,
-                    name: todos_articulos[e.target.defaultValue.split(' ')[0]-1].name,
-                    price: precioProductoAIngresar(todos_articulos[e.target.defaultValue.split(' ')[0]-1], product)
-                })
+        //         setProduct({
+        //             ...product,
+        //             name: todos_articulos[e.target.defaultValue.split(' ')[0]-1].name,
+        //             price: precioProductoAIngresar(todos_articulos[e.target.defaultValue.split(' ')[0]-1], product)
+        //         })
                 
-            }, 50)
-        }
+        //     }, 50)
+        // }
 
         
     }
@@ -348,7 +351,7 @@ export function NewArticleForm({articles}){
             
             <Row className="mb-3">
                 <Col>
-                <Autocomplete
+                {/* <Autocomplete
                     size="medium"
                     id="clear-on-escape"
                     clearOnEscape
@@ -363,7 +366,15 @@ export function NewArticleForm({articles}){
                     renderInput={(params) => (
                         <TextField {...params}  variant="standard" />
                     )}
-                />
+                /> */}
+                    <Form.Select onChange={(e) => seleccionarArticulo(e)}>
+                        <option selected disabled>Seleccione un articulo</option>
+                        {
+                            todos_articulos?.map((e,i) => 
+                                <option name={e.name} value={i}>{e.name}</option>
+                            )
+                        }
+                    </Form.Select>
                 </Col>
                 <Col xs lg="1">
                     <Button size='sm' className='me' variant="primary" onClick={() => {handleOpenCreateArticle()}}>

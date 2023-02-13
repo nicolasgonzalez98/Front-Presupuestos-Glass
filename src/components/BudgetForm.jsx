@@ -276,15 +276,7 @@ export function BudgetForm(){
 
                         <div className="mb-3">
                             <Form.Label>Cliente: </Form.Label>
-                            {/* <Autosuggest 
-                                suggestions={mis_Clientes}
-                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                getSuggestionValue={getSuggestionValue}
-                                renderSuggestion={renderSuggestion}
-                                inputProps={inputProps}
-                                onSuggestionSelected={eventEnter}
-                            /> */}
+                            
                             
                             <Row>
                                 <Col>
