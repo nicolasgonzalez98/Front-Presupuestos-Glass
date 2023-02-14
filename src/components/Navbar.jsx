@@ -12,7 +12,7 @@ function NavGlassDoor() {
     
 
     function logOut(){
-
+        localStorage.setItem('id_user', 0)
         axios({
             method: 'post',
             url: '/authentication/logout',
